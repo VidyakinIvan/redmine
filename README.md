@@ -2,8 +2,9 @@
 Оригинальный проект: https://www.redmine.org/
 Образ: https://hub.docker.com/_/redmine
 В redmine установлены:
-- https://github.com/mrliptontea/PurpleMine2 симпатичная тема для работы
+- https://github.com/gagnieray/opale симпатичная тема для работы
 - https://github.com/jgraichen/redmine_dashboard - канбан доска.
+- https://github.com/vanzhiganov/redmine-forgejo-webhook - плагин для связки с gitea
 
 ### Старт проекта
 ```
