@@ -7,7 +7,7 @@ Redmine::Plugin.register :redmine_custom_help do
   delete_menu_item :top_menu, :help
 
   menu :top_menu, :custom_help_link, 
-       { :controller => 'projects', :action => 'show', :project_id => 'help'},
+       { :controller => 'projects', :action => 'show', :id => 'help'},
        :caption => 'Помощь',
        :last => true
 end
