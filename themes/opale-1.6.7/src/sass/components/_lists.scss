@@ -1,0 +1,897 @@
+@use "sass:color";
+@use "sass:map";
+@use "../variables";
+@use "../functions/parse-length";
+@use "../mixins/issues";
+@use "../mixins/variants";
+@use "../vendor/bootstrap/mixins/clearfix";
+@use "../vendor/tabler-icons";
+
+// Lists
+
+table {
+  border-spacing: 0;
+  border-collapse: collapse;
+}
+
+table.list {
+  width: 100%;
+  margin-bottom: variables.$line-height-computed;
+  font-size: variables.$font-size-list;
+
+  .autoscroll & {
+    margin-bottom: 0;
+  }
+
+  &.changesets {
+    margin-bottom: variables.$line-height-computed;
+  }
+
+  th,
+  .table-list-header {
+    padding: variables.$table-cell-padding;
+    border: 2px solid variables.$table-border-color;
+    border-width: variables.$table-list-header-border;
+    background-color: variables.$table-list-header-bg;
+    color: variables.$gray-750;
+    vertical-align: bottom;
+
+    @if variables.$table-list-header-bg == variables.$body-bg {
+      @at-root .box & {
+        background-color: variables.$panel-bg;
+      }
+    }
+
+    a {
+      color: variables.$gray-900;
+    }
+
+    .icon-svg {
+      display: none;
+    }
+
+    .icon-label {
+      margin-left: 0;
+    }
+  }
+
+  tr.ui-sortable-helper {
+    background-color: variables.$highlight-bg;
+  }
+
+  td {
+    padding: variables.$table-cell-padding;
+    border: 1px solid variables.$table-border-color;
+    border-width: variables.$table-list-item-border;
+    text-align: center;
+    vertical-align: top;
+
+    &.icon {
+      padding-left: variables.$table-cell-padding + variables.$icon-width;
+    }
+
+    &.id,
+    &.issue_id,
+    &.legacy_id {
+      width: 2%;
+      font-weight: variables.$font-weight-bold;
+    }
+
+    &.reorder {
+      white-space: nowrap;
+    }
+
+    &.attachments a {
+      display: block;
+    }
+
+    &.short_description {
+      text-align: left;
+    }
+  }
+
+  th,
+  td {
+    &.checkbox {
+      width: 15px;
+      padding-right: variables.$table-cell-padding;
+      padding-left: variables.$table-cell-padding;
+
+      @if parse-length.parse-length(variables.$table-list-item-border, right) == 0 {
+        &:first-child {
+          padding-right: 0;
+        }
+      }
+
+      input {
+        margin: 2px 0 0;
+      }
+    }
+
+    &.activity,
+    &.assigned_to,
+    &.attachments,
+    &.author,
+    &.category,
+    &.comments,
+    &.description,
+    &.fixed_version,
+    &.last_notes,
+    &.last_updated_by,
+    &.name,
+    &.parent-subject,
+    &.priority,
+    &.relations,
+    &.roles,
+    &.status,
+    &.string,
+    &.subject,
+    &.text,
+    &.tracker,
+    &.user {
+      text-align: left;
+    }
+
+    &.id,
+    &.legacy_id,
+    &.estimated_hours,
+    &.float,
+    &.int,
+    &.remaining_hours,
+    &.spent_hours,
+    &.story_points {
+      text-align: right;
+    }
+  }
+
+  td,
+  div {
+    &.buttons {
+      text-align: right;
+      white-space: nowrap;
+
+      a {
+        margin-right: variables.$padding-small-vertical;
+
+        &.icon-only {
+          margin-right: 0;
+        }
+      }
+
+      img {
+        vertical-align: middle;
+      }
+    }
+  }
+
+  caption {
+    padding: .5em .5em .5em 0;
+    text-align: left;
+  }
+}
+
+.table-list-cell {
+  display: table-cell;
+  padding: variables.$table-cell-padding;
+  vertical-align: top;
+}
+
+tr.project {
+  .name a {
+    white-space: nowrap;
+  }
+
+  &.closed,
+  &.archived,
+  &.closed a,
+  &.archived a {
+    color: variables.$gray-600;
+  }
+
+  &.idnt td.name {
+    @include variants.ti-icon-style;
+
+    &::before {
+      @include variants.ti-icon-variant(tabler-icons.$ti-icon-chevron-right);
+
+      color: variables.$gray-600;
+    }
+  }
+
+  @for $i from 1 through 9 {
+    &.idnt-#{$i} td.name {
+      padding-left: 16px * $i;
+    }
+  }
+}
+
+tr.issue {
+  text-align: center;
+  white-space: nowrap;
+
+  .category,
+  .enumeration,
+  .list,
+  .parent-subject,
+  .parent,
+  .relations,
+  .string,
+  .subject,
+  .text {
+    white-space: normal;
+  }
+
+  .relations {
+    text-align: left;
+    white-space: normal;
+
+    span {
+      white-space: nowrap;
+    }
+  }
+
+  .controller-issues.action-index & {
+    &.assigned-to-me {
+      .assigned_to,
+      .subject {
+        a {
+          font-weight: variables.$font-weight-bold;
+        }
+      }
+    }
+  }
+
+  &.idnt td.subject {
+    @include variants.ti-icon-style;
+
+    &::before {
+      @include variants.ti-icon-variant(tabler-icons.$ti-icon-chevron-right);
+
+      color: variables.$gray-600;
+    }
+  }
+
+  &.overdue td.due_date {
+    color: variables.$brand-danger;
+  }
+
+  @for $i from 1 through 9 {
+    &.idnt-#{$i} td.subject {
+      padding-left: 16px * $i;
+    }
+  }
+}
+
+.issues {
+  .block_column,
+  .description,
+  .last_notes {
+    padding: 0;
+    text-align: left;
+    white-space: normal;
+
+    > span {
+      display: block;
+      margin-bottom: variables.$line-height-computed * .25;
+      padding: variables.$table-cell-padding;
+      font-weight: variables.$font-weight-bold;
+    }
+
+    pre {
+      white-space: normal;
+    }
+
+    @media screen and (min-width: variables.$screen-sm-min) {
+      > .wiki {
+        max-height: 20em;
+        padding: variables.$padding-wiki;
+        overflow: auto;
+      }
+    }
+  }
+}
+
+td.center {
+  text-align: center;
+}
+
+td.assigned_to,
+td.last_updated_by {
+  white-space: normal;
+}
+
+.issue-report {
+  table-layout: fixed;
+}
+
+.issue-report-graph {
+  width: 75%;
+  margin: variables.$line-height-computed auto;
+}
+
+.sample-data {
+  margin: variables.$line-height-computed * .5;
+  margin-bottom: variables.$line-height-computed;
+  border: 1px solid variables.$table-border-color;
+
+  td {
+    border: 1px solid variables.$table-border-color;
+  }
+
+  tr:first-child td {
+    font-weight: variables.$font-weight-bold;
+    text-align: center;
+  }
+}
+
+tr.builtin td.name {
+  font-style: italic;
+}
+
+tr.entry {
+  border: 1px solid variables.$gray-400;
+
+  td {
+    white-space: nowrap;
+
+    &.filename {
+      width: 30%;
+      text-align: left;
+    }
+
+    &.filename_no_report {
+      width: 70%;
+      text-align: left;
+    }
+
+    &.size {
+      text-align: right;
+    }
+
+    &.revision,
+    &.author {
+      text-align: center;
+    }
+
+    &.age {
+      text-align: right;
+    }
+  }
+
+  &.file td {
+    &.filename a,
+    &.filename_no_report a {
+      margin-left: 18px;
+    }
+  }
+}
+
+@if variables.$table-list-color-odd-rows {
+  table.list:not(.odd-even) tbody tr:nth-child(odd):not(.ui-sortable-helper),
+  .odd {
+    > td {
+      background-color: variables.$table-bg-accent;
+    }
+  }
+}
+
+@if variables.$table-list-color-even-rows {
+  table.list:not(.odd-even) tbody tr:nth-child(even):not(.ui-sortable-helper),
+  .even {
+    > td {
+      background-color: variables.$table-bg-accent;
+    }
+  }
+}
+
+@if variables.$table-list-highlight-rows {
+  table.list > tbody > tr:nth-child(n):hover:not(.ui-sortable-helper) {
+    background-color: variables.$table-bg-hover;
+
+    @if variables.$color-priorities {
+      @each $priority-id, $priority-color in variables.$priority-color-map {
+        @if $priority-id != "default" {
+          &.priority-#{$priority-id} {
+            background-color: color.adjust(map.get($priority-color, background), $alpha: variables.$table-color-hover-factor);
+          }
+        }
+      }
+    }
+  }
+}
+
+
+// Priorities
+
+@if variables.$priority-icon {
+  table.list tbody tr {
+    .priority {
+      @include issues.priority-icon-base;
+    }
+  }
+
+  @each $priority-id, $priority-icon in variables.$priority-icons-map {
+    @include issues.priority-icon(
+      ".priority-#{$priority-id}",
+      map.get($priority-icon, color),
+      map.get($priority-icon, icon)
+    );
+  }
+}
+
+@if variables.$color-priorities {
+  @each $priority-id, $priority-color in variables.$priority-color-map {
+    tr.priority-#{$priority-id} {
+      .checkbox {
+        position: relative;
+
+        &::before {
+          content: "";
+          position: absolute;
+          top: 0;
+          bottom: 0;
+          left: 0;
+          width: 6px;
+          background-color: map.get($priority-color, background);
+        }
+      }
+
+      a,
+      .priority {
+        color: map.get($priority-color, link);
+      }
+    }
+  }
+}
+
+@if variables.$color-trackers {
+  tr.issue .id > a,
+  tr.issue .issue_id > a,
+  tr.issue .legacy_id > a,
+  a.issue,
+  .relations > span > a.issue,
+  .parent > a.issue {
+    border-radius: variables.$border-radius-small (variables.$border-radius-small * 3) (variables.$border-radius-small * 3) variables.$border-radius-small;
+    background-color: variables.$tracker-default-bg;
+    color: variables.$tracker-default-text;
+
+    &:hover {
+      background-color: color.adjust(variables.$tracker-default-bg, $lightness: -10%);
+      color: variables.$tracker-default-text;
+      text-decoration: none;
+    }
+
+    &:focus,
+    &:active {
+      text-decoration: none;
+    }
+  }
+
+  a.issue {
+    margin-right: 1px;
+    padding: variables.$tracker-inline-padding;
+    font-weight: variables.$font-weight-normal;
+
+    &.closed {
+      position: relative;
+      color: color.mix(variables.$tracker-default-text, variables.$tracker-default-bg, 75%);
+      text-decoration: none;
+
+      &::after {
+        content: "";
+        display: block;
+        position: absolute;
+        right: 5px;
+        bottom: 0;
+        left: 5px;
+        height: calc(50% - 2px * .5);
+        transform: rotate(-4deg);
+        transition: border-color variables.$transition-time;
+        border-top: 2px solid color.adjust(variables.$tracker-default-text, $alpha: -.05);
+      }
+
+      &:hover::after {
+        border-top-color: color.adjust(variables.$tracker-default-text, $alpha: -.75);
+      }
+    }
+  }
+
+  tr.issue .id > a,
+  tr.issue .legacy_id > a {
+    display: block;
+    padding: variables.$tracker-list-padding;
+
+    &::before {
+      content: "#";
+      color: color.mix(variables.$tracker-default-text, variables.$tracker-default-bg, 50%);
+    }
+  }
+
+  tr.issue .issue_id > a {
+    display: inline-block;
+    padding: variables.$tracker-list-padding;
+  }
+
+  @each $tracker-id, $tracker-colors in variables.$tracker-colors-map {
+    @include issues.tracker(
+      ".tracker-#{$tracker-id}",
+      map.get($tracker-colors, background),
+      map.get($tracker-colors, color)
+    );
+  }
+}
+
+
+// List groups
+
+tr.group {
+  > td {
+    border-bottom: 1px solid variables.$table-border-color;
+    font-weight: variables.$font-weight-bold;
+    text-align: left;
+
+    a {
+      color: variables.$brand-primary;
+    }
+  }
+
+  .toggle-all {
+    display: none;
+    color: variables.$gray-600;
+    font-weight: variables.$font-weight-normal;
+  }
+
+  &:hover .toggle-all {
+    display: inline;
+  }
+}
+
+.toggle-all:hover {
+  text-decoration: none;
+}
+
+
+// Time entry in report
+
+tr.time-entry {
+  text-align: center;
+
+  td.project,
+  td.spent_on,
+  td.activity {
+    width: 6em;
+  }
+
+  td.user {
+    width: 12em;
+  }
+
+  td.issue,
+  td.comments {
+    text-align: left;
+    white-space: normal;
+  }
+
+  td.hours {
+    font-weight: variables.$font-weight-bold;
+  }
+}
+
+.time-entries,
+tr.time-entry {
+  td.hours {
+    width: 1%;
+    text-align: right;
+    white-space: nowrap;
+
+    .hours-dec {
+      font-size: .9em;
+    }
+  }
+}
+
+.mypage-box {
+  td.hours {
+    font-weight: variables.$font-weight-bold;
+
+    em {
+      font-style: normal;
+    }
+  }
+
+  tr.time-entry td.hours {
+    font-weight: variables.$font-weight-normal;
+  }
+}
+
+// Wiki page history entry
+
+tr.wiki-page-version {
+  td.updated_on,
+  td.author {
+    text-align: center;
+  }
+}
+
+// Project versions list
+
+tr.version {
+  &.closed {
+    color: variables.$gray-750;
+
+    a {
+      color: variables.$gray-750;
+    }
+  }
+
+  td {
+    &.date,
+    &.status,
+    &.sharing {
+      text-align: center;
+      white-space: nowrap;
+    }
+  }
+}
+
+
+// Users list
+
+tr.user {
+  td {
+    width: 13%;
+    white-space: nowrap;
+
+    &.username,
+    &.firstname,
+    &.lastname {
+      text-align: left;
+    }
+
+    &.email {
+      width: 18%;
+      text-align: left;
+    }
+  }
+
+  &.locked,
+  &.registered,
+  &.locked a,
+  &.registered a {
+    color: variables.$gray-600;
+  }
+}
+
+
+// Plugins list
+
+table.plugins {
+  .configure {
+    text-align: right;
+  }
+
+  span.name {
+    margin-bottom: .5em;
+    font-size: variables.$font-size-large;
+    font-weight: variables.$font-weight-bold;
+  }
+
+  .description,
+  .url {
+    display: block;
+  }
+}
+
+
+// Files list
+
+table.files {
+  tbody th {
+    text-align: left;
+  }
+
+  tr.file td {
+    &.filename {
+      padding-left: variables.$icon-width + variables.$table-cell-padding;
+      text-align: left;
+    }
+
+    &.digest {
+      font-family: variables.$font-family-monospace;
+    }
+  }
+}
+
+
+// Admin lists
+
+.controller-enumerations {
+  td.name {
+    width: 50%;
+  }
+
+  td.tick,
+  td.reorder {
+    width: 15%;
+    text-align: center;
+  }
+}
+
+table.list.enumerations {
+  table-layout: fixed;
+
+  + h3 {
+    margin-top: variables.$line-height-computed * 2;
+  }
+
+  + p {
+    margin-bottom: variables.$line-height-computed * 2;
+  }
+}
+
+
+// Totals
+
+.query-totals {
+  #content & {
+    margin-top: 0;
+
+    @media screen and (min-width: variables.$redmine-responsive-min) {
+      margin-top: -(variables.$line-height-computed * 2 + variables.$btn-padding-vertical);
+      text-align: right;
+    }
+  }
+
+  > span {
+    margin-right: variables.$padding-base-horizontal;
+
+    &:last-child {
+      margin-right: 0;
+    }
+  }
+
+  .value {
+    font-weight: variables.$font-weight-bold;
+  }
+}
+
+
+// Definition lists
+
+#list-definition {
+  > div {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+
+    .query-columns label {
+      display: block;
+    }
+
+    .field {
+      width: 4.85rem;
+    }
+  }
+}
+
+
+// Activity and search results list
+
+#activity dl,
+#search-results {
+  margin-left: variables.$padding-side;
+}
+
+#activity,
+#search-results {
+  dt {
+    svg,
+    span:not(.highlight) {
+      margin-right: .4em;
+    }
+  }
+
+  dd {
+    margin-bottom: variables.$line-height-computed;
+    padding-top: .1em;
+  }
+
+  span.project::after {
+    content: " -";
+  }
+
+  span.description {
+    display: block;
+    color: variables.$gray-750;
+    font-style: italic;
+  }
+}
+
+#activity {
+  $activity-avatar: 24px;
+  $activity-avatar-space: 5px;
+  $activity-indent: 20px;
+
+  @if variables.$use-gravatars {
+    $activity-indent: $activity-indent + $activity-avatar + $activity-avatar-space;
+  }
+
+  h3,
+  h4 {
+    margin: 0 0 variables.$line-height-computed;
+    padding-bottom: .2em;
+    border-bottom: 1px dotted variables.$gray-600;
+    font-size: variables.$font-size-h4;
+    font-weight: variables.$font-weight-normal;
+  }
+
+  dt {
+    &.grouped {
+      margin-left: $activity-indent;
+    }
+
+    &.me .time {
+      border-bottom: 1px solid variables.$gray-400;
+    }
+
+    .time {
+      color: variables.$gray-750;
+    }
+
+    @if variables.$use-gravatars {
+      .gravatar {
+        top: 0;
+        margin-top: -2px;
+        margin-right: $activity-avatar-space;
+        float: left;
+      }
+    }
+  }
+
+  dd {
+    overflow: hidden;
+    font-size: variables.$font-size-small;
+
+    &.grouped {
+      margin-left: $activity-indent;
+    }
+  }
+}
+
+#search-results-counts {
+  float: right;
+
+  ul {
+    @include clearfix.clearfix;
+  }
+
+  li {
+    margin-left: 1em;
+    float: left;
+    list-style-type: none;
+  }
+}
+
+
+// Search results highlight
+
+.highlight {
+  background-color: color.adjust(variables.shade(variables.$yellow, 100), $saturation: 25%);
+  color: color.adjust(variables.shade(variables.$yellow, 800), $saturation: 25%);
+
+  &.token-1 {
+    background-color: color.adjust(variables.shade(variables.$red, 100), $saturation: 25%);
+    color: color.adjust(variables.shade(variables.$red, 800), $saturation: 25%);
+  }
+
+  &.token-2 {
+    background-color: color.adjust(variables.shade(variables.$green, 100), $saturation: 25%);
+    color: color.adjust(variables.shade(variables.$green, 800), $saturation: 25%);
+  }
+
+  &.token-3 {
+    background-color: color.adjust(variables.shade(variables.$blue, 100), $saturation: 25%);
+    color: color.adjust(variables.shade(variables.$blue, 800), $saturation: 25%);
+  }
+}
+

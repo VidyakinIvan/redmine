@@ -1,0 +1,76 @@
+@use "../variables";
+
+// Progress bar
+
+table.progress {
+  width: 80px;
+  margin-top: 3px;
+  margin-right: 5px;
+  float: left;
+  empty-cells: show;
+  border: 0 none;
+
+  .version-overview & {
+    width: 40em;
+  }
+
+  td.done_ratio & {
+    margin-right: auto;
+    margin-left: auto;
+    float: none;
+  }
+
+  tr {
+    background: transparent !important; // stylelint-disable-line declaration-no-important
+  }
+
+  td {
+    height: variables.$progress-height;
+    padding: 0;
+    border: 0 none;
+
+    &:first-child {
+      border-top-left-radius: variables.$progress-height * .5;
+      border-bottom-left-radius: variables.$progress-height * .5;
+    }
+
+    &:last-child {
+      border-top-right-radius: variables.$progress-height * .5;
+      border-bottom-right-radius: variables.$progress-height * .5;
+    }
+
+    &.done {
+      background-color: variables.$progress-bar-bg !important; // stylelint-disable-line declaration-no-important
+    }
+
+    &.closed {
+      background-color: variables.$progress-bar-success-bg !important; // stylelint-disable-line declaration-no-important
+    }
+
+    &.todo {
+      background-color: variables.$progress-bg !important; // stylelint-disable-line declaration-no-important
+      mix-blend-mode: multiply;
+    }
+  }
+
+  .issue & td {
+    padding: 0;
+  }
+
+  .context-menu-selection & td.todo {
+    mix-blend-mode: screen;
+  }
+}
+
+p {
+  &.percent {
+    margin-bottom: 0;
+    font-size: variables.$font-size-small;
+  }
+
+  &.progress-info {
+    clear: left;
+    color: variables.$gray-750;
+    font-size: 80%;
+  }
+}

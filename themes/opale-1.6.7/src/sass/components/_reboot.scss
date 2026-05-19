@@ -1,0 +1,195 @@
+@use "sass:math";
+@use "../variables";
+@use "../vendor/bootstrap/mixins/clearfix";
+
+// Base styles
+
+html {
+  overflow-y: scroll;
+  tab-size: 4;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: variables.$body-bg;
+  color: variables.$text-color;
+  font-family: variables.$font-family-base;
+  font-size: variables.$font-size-base;
+  font-weight: variables.$font-weight-normal;
+  line-height: variables.$line-height-base;
+}
+
+a {
+  color: variables.$link-color;
+  text-decoration: none;
+
+  &:hover,
+  &:focus {
+    color: variables.$link-hover-color;
+    text-decoration: variables.$link-hover-decoration;
+  }
+
+  &.issue.closed {
+    color: variables.$link-color-issue-closed;
+    text-decoration: variables.$link-closed-decoration;
+  }
+
+  &.project.closed {
+    color: variables.$link-color-project-closed;
+  }
+
+  &.user.locked {
+    color: variables.$link-color-user-locked;
+  }
+}
+
+// Remove the tapping delay on clickable elements
+
+a,
+area,
+button,
+input,
+label,
+select,
+summary,
+textarea,
+[tabindex] {
+  touch-action: manipulation;
+}
+
+h1 {
+  margin: 0;
+  font-size: 2em;
+  font-weight: variables.$font-weight-semi-bold;
+  line-height: variables.$line-height-large * .825;
+}
+
+h2 {
+  margin-top: 0;
+  margin-bottom: variables.$line-height-computed;
+  font-size: 1.43em;
+  font-weight: variables.$font-weight-semi-bold;
+  line-height: variables.$line-height-large;
+
+  img {
+    vertical-align: middle;
+  }
+}
+
+h3 {
+  margin-top: 0;
+  margin-bottom: variables.$line-height-computed;
+  font-size: 1.14em;
+  font-weight: variables.$font-weight-semi-bold;
+  line-height: variables.$line-height-large;
+}
+
+h4 {
+  margin-top: 0;
+  font-size: 1em;
+  font-weight: variables.$font-weight-semi-bold;
+  line-height: variables.$line-height-base;
+}
+
+p {
+  margin: 0 0 (variables.$line-height-computed * .5);
+}
+
+small {
+  font-size: variables.$font-size-small;
+}
+
+table {
+  th {
+    font-weight: variables.$font-weight-bold;
+  }
+
+  th,
+  td {
+    padding: variables.$table-condensed-cell-padding variables.$table-cell-padding;
+  }
+
+  p {
+    margin: 0;
+  }
+
+  form {
+    p {
+      margin-bottom: (variables.$line-height-computed * .5);
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+  }
+}
+
+ul,
+ol {
+  margin-top: 0;
+  margin-bottom: (variables.$line-height-computed * .5);
+  padding-left: 1.5em;
+
+  ul,
+  ol {
+    margin-bottom: 0;
+  }
+}
+
+dl {
+  margin-top: 0;
+  margin-bottom: variables.$line-height-computed;
+}
+
+dt {
+  margin-top: variables.$line-height-computed;
+  font-weight: variables.$font-weight-bold;
+}
+
+dd {
+  margin-bottom: variables.$line-height-computed;
+  margin-left: variables.$line-height-computed;
+}
+
+code,
+kbd,
+pre,
+samp {
+  font-family: variables.$font-family-monospace;
+  font-size: 1em;
+}
+
+hr {
+  margin-top: variables.$line-height-computed;
+  margin-bottom: variables.$line-height-computed;
+  border: 0;
+  border-top: 1px solid variables.$hr-border;
+
+  li & {
+    margin-top: variables.$line-height-computed * .5;
+    margin-bottom: variables.$line-height-computed * .5;
+  }
+}
+
+blockquote {
+  margin: 0 0 variables.$line-height-computed;
+  padding: math.floor(variables.$line-height-computed * .25) variables.$padding-large-horizontal;
+  border-left: 4px solid variables.$blockquote-border-color;
+
+  > :first-child {
+    margin-top: 0;
+  }
+
+  > :last-child {
+    margin-bottom: 0;
+  }
+}
+
+.clear {
+  @include clearfix.clearfix;
+}
+
+.inline-block {
+  display: inline-block;
+}

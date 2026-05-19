@@ -1,0 +1,50 @@
+{
+  "name": "Opale",
+  "description": "A Redmine theme written in SCSS",
+  "keywords": [
+    "redmine",
+    "theme",
+    "sass",
+    "scss"
+  ],
+  "author": "Guillaume AGNIERAY",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:gagnieray/Opale.git"
+  },
+  "license": "AGPL-3.0",
+  "bugs": {
+    "url": "https://github.com/gagnieray/opale/issues"
+  },
+  "homepage": "https://github.com/gagnieray/opale",
+  "scripts": {
+    "prepare": "husky",
+    "build": "grunt",
+    "watch": "grunt watch",
+    "lint:sass": "stylelint src/sass/**/*.scss",
+    "lint": "npm run -S lint:sass"
+  },
+  "devDependencies": {
+    "@lodder/grunt-postcss": "^3.1.1",
+    "@tabler/icons-webfont": "^3.41.1",
+    "autoprefixer": "^10.5.0",
+    "grunt": "^1.6.1",
+    "grunt-contrib-copy": "^1.0.0",
+    "grunt-contrib-watch": "^1.1.0",
+    "grunt-sass": "^4.1.0",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.4.0",
+    "sass": "^1.99.0",
+    "stylelint": "^17.7.0",
+    "stylelint-config-property-sort-order-smacss": "^11.2.0",
+    "stylelint-config-standard-scss": "^17.0.0"
+  },
+  "browserslist": [
+    "last 2 versions",
+    "> 1%",
+    "not dead"
+  ],
+  "lint-staged": {
+    "src/**/*.scss": []
+  }
+}

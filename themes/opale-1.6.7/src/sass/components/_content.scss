@@ -1,0 +1,301 @@
+@use "../variables";
+
+#wrapper {
+  overflow-x: hidden;
+}
+
+#main {
+  @if variables.$css-grid-layout {
+    display: grid;
+    grid-template-rows: auto 1fr;
+
+    @if variables.$sidebar-position == "left" {
+      grid-template-areas:
+        "sidebar content"
+        "footer footer";
+      grid-template-columns: auto 1fr;
+    } @else {
+      grid-template-areas:
+        "content sidebar"
+        "footer footer";
+      grid-template-columns: 1fr auto;
+    }
+  } @else if variables.$flexbox-layout {
+    display: flex;
+  } @else {
+    @include clearfix.clearfix;
+  }
+}
+
+
+// Main container
+
+#content {
+  padding: variables.$padding-side;
+  overflow-x: auto; // needed for drag & drop of enumerations
+
+  @if variables.$css-grid-layout {
+    grid-area: content;
+  } @else if variables.$flexbox-layout {
+    $side-space: variables.$sidebar-width + variables.$padding-side * 2;
+
+    flex: 1 1 auto;
+    width: calc(100% - #{$side-space});
+  } @else {
+    overflow: hidden;
+  }
+}
+
+
+// Sidebar
+
+#sidebar {
+  #main & {
+    position: relative;
+    padding: variables.$padding-side variables.$sidebar-padding-horizontal;
+  }
+
+  #main.nosidebar & {
+    margin: 0;
+    padding: 0;
+    border: 0 none;
+
+    @if variables.$css-grid-layout {
+      width: 0;
+    } @else if variables.$flexbox-layout {
+      flex: 0 0 auto;
+    } @else {
+      width: 0;
+      float: none;
+    }
+  }
+
+  @if variables.$css-grid-layout {
+    grid-area: sidebar;
+    width: variables.$sidebar-width-computed;
+  } @else if variables.$flexbox-layout {
+    flex: 0 0 variables.$sidebar-width-computed;
+
+    @if variables.$sidebar-position == "left" {
+      order: -1;
+    } @else {
+      order: 1;
+    }
+  } @else {
+    width: variables.$sidebar-width-computed;
+    float: variables.$sidebar-position;
+  }
+
+  @media screen and (width >= 1px) {
+    @if not variables.$flexbox-layout {
+      padding-bottom: variables.$padding-side * 3;
+    }
+
+    @if variables.$sidebar-position == "left" {
+      border-right: 1px solid variables.$sidebar-link-active-border;
+      box-shadow: inset -9px 0 6px -6px rgb(0 0 0 / .05);
+    } @else {
+      border-left: 1px solid variables.$sidebar-link-active-border;
+      box-shadow: inset 9px 0 6px -6px rgb(0 0 0 / .05);
+    }
+  }
+
+  h3 {
+    margin-top: variables.$line-height-computed * 1.5;
+  }
+
+  #sidebar-wrapper > h3:first-child,
+  #sidebar-wrapper > form:first-child > h3,
+  #sidebar-wrapper > #watchers:first-child > h3 {
+    margin-top: variables.$line-height-computed * .25;
+  }
+
+  ul {
+    &:nth-child(n) {
+      margin: 0 0 (variables.$line-height-computed * .5);
+      padding: 0;
+
+      @if variables.$sidebar-position == "left" {
+        margin-right: -(variables.$sidebar-padding-horizontal);
+      }
+    }
+
+    &:not(.watchers) {
+      li {
+        position: relative;
+        margin: 0;
+        padding: 0;
+        list-style-type: none;
+
+        > a:not(.icon-only) {
+          display: block;
+          padding: variables.$sidebar-padding-vertical variables.$sidebar-padding-horizontal;
+          border: 1px solid transparent;
+
+          @if variables.$sidebar-position == "left" {
+            border-left-width: 3px;
+            border-radius: variables.$border-radius-large 0 0 variables.$border-radius-large;
+          } @else {
+            margin-left: -(variables.$sidebar-padding-horizontal);
+            border-right-width: 3px;
+            border-radius: 0 variables.$border-radius-large variables.$border-radius-large 0;
+          }
+
+          &:hover {
+            background-color: variables.$sidebar-link-hover-bg;
+            color: variables.$sidebar-link-hover-text;
+            text-decoration: none;
+          }
+
+          &.selected {
+            border-color: variables.$sidebar-link-active-border;
+            background-color: variables.$sidebar-link-active-bg;
+            color: variables.$sidebar-link-active-text;
+
+            @if variables.$sidebar-position == "left" {
+              margin-right: -1px;
+              border-right-color: variables.$body-bg;
+              border-left-color: variables.$sidebar-link-active-side;
+              box-shadow: -3px 1px 2px rgb(0 0 0 / .1);
+            } @else {
+              margin-left: -(variables.$sidebar-padding-horizontal + 1px);
+              border-right-color: variables.$sidebar-link-active-side;
+              border-left-color: variables.$body-bg;
+              box-shadow: 3px 1px 2px rgb(0 0 0 / .1);
+            }
+          }
+        }
+      }
+    }
+
+    &.queries {
+      > li {
+        position: relative;
+
+        > a.query {
+          padding-right: variables.$sidebar-padding-horizontal * 1.5;
+        }
+
+        > a.icon-only {
+          position: absolute;
+          top: variables.$sidebar-padding-vertical;
+          right: variables.$sidebar-padding-horizontal * .5;
+          line-height: variables.$line-height-computed;
+
+          &::before {
+            line-height: inherit;
+          }
+        }
+      }
+    }
+
+    &.pages-hierarchy {
+      .pages-hierarchy {
+        margin-left: variables.$sidebar-padding-horizontal + 3px;
+        border-left: 2px solid variables.$gray-400;
+
+        @if variables.$sidebar-position == "right" {
+          margin-left: 3px;
+        } @else {
+          margin-right: 0;
+        }
+
+        li {
+          > a:not(.icon-only) {
+            padding-right: variables.$sidebar-padding-horizontal * .5;
+            padding-left: variables.$sidebar-padding-horizontal * .5;
+
+            @if variables.$sidebar-position == "right" {
+              margin-left: 0;
+            }
+          }
+
+          .pages-hierarchy {
+            margin-left: variables.$sidebar-padding-horizontal * .5 + 3px;
+          }
+        }
+      }
+    }
+  }
+
+  // Special treatment for anchor tags directly under sidebar tag
+  > a {
+    margin: variables.$sidebar-padding-vertical variables.$sidebar-padding-horizontal;
+
+    @if variables.$sidebar-position == "left" {
+      margin-left: variables.$sidebar-padding-horizontal + 3px;
+    } @else {
+      margin-right: variables.$sidebar-padding-horizontal + 3px;
+      margin-left: 0;
+    }
+  }
+}
+
+#footer {
+  margin: 0 variables.$padding-side;
+  padding: variables.$line-height-computed 0;
+  border-top: 1px solid variables.$gray-400;
+  color: variables.$gray-750;
+  font-size: variables.$font-size-small;
+
+  @if variables.$css-grid-layout {
+    grid-area: footer;
+  }
+}
+
+@if variables.$fixed-layout {
+  @media screen and (min-width: variables.$screen-sm-min) {
+    body {
+      background: variables.$gray-100;
+    }
+
+    #top-menu,
+    #header,
+    #main-menu ul,
+    #main,
+    #footer {
+      width: variables.$width-sm;
+      margin-right: auto;
+      margin-left: auto;
+    }
+
+    #main {
+      overflow: hidden;
+      background: variables.$white;
+    }
+
+    #footer {
+      background: variables.$white;
+
+      &::before {
+        content: " ";
+        display: inline-block;
+        width: 20px;
+      }
+    }
+  }
+
+  @media screen and (min-width: variables.$screen-md-min) {
+    #top-menu,
+    #header,
+    #main-menu ul,
+    #main,
+    #footer {
+      width: variables.$width-md;
+    }
+  }
+
+  @media screen and (min-width: variables.$screen-lg-min) {
+    #top-menu,
+    #header,
+    #main-menu ul,
+    #main,
+    #footer {
+      width: variables.$width-lg;
+    }
+  }
+
+  #main-menu ul > li > a {
+    padding: variables.$main-menu-padding-vertical 1px;
+  }
+}

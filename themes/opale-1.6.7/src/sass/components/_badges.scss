@@ -1,0 +1,61 @@
+@use "../variables";
+
+tr.group .count,
+span.private,
+.badge {
+  display: inline-block;
+  position: relative;
+  top: -1px;
+  box-sizing: border-box;
+  min-width: 1em;
+  margin-right: variables.$badge-space;
+  margin-left: variables.$badge-space;
+  padding: variables.$badge-padding-v variables.$badge-padding-h;
+  border: 1px solid;
+  border-radius: variables.$badge-border-radius;
+  font-size: variables.$badge-font-size;
+  font-weight: variables.$badge-font-weight;
+  text-align: center;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+span.private,
+.badge-private {
+  padding: (variables.$badge-padding-v + 1px) (variables.$badge-padding-h + 1px);
+  border: 0;
+  background: variables.$brand-warning;
+  color: variables.shade(variables.$brand-warning, 950);
+
+  h3 & {
+    font-size: variables.$font-size-small-px;
+  }
+}
+
+tr.group .count,
+.badge-count {
+  padding: (variables.$badge-padding-v + 1px) (variables.$badge-padding-h + 1px);
+  border: 0;
+  background: variables.$brand-primary;
+  color: variables.$brand-text;
+}
+
+.badge-status-open {
+  border-color: variables.$blue;
+  color: variables.$blue;
+}
+
+.badge-status-locked {
+  border-color: variables.$gray-750;
+  color: variables.$gray-750;
+}
+
+.badge-status-closed {
+  border-color: variables.$green;
+  color: variables.$green;
+}
+
+.badge-issues-count {
+  border-color: variables.$gray-400;
+  background-color: variables.$gray-100;
+}

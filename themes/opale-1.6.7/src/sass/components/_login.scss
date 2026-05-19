@@ -1,0 +1,99 @@
+@use "sass:color";
+@use "../variables";
+@use "../mixins/forms";
+
+// Login form
+
+#login-form {
+  box-sizing: border-box;
+  width: variables.$login-form-width;
+  margin: variables.$line-height-computed * 2 auto variables.$line-height-computed;
+  padding: variables.$padding-side;
+  border: 1px solid variables.shade(variables.$yellow, 300);
+  border-radius: variables.$border-radius-base;
+  background-color: variables.shade(variables.$yellow, 100);
+  box-shadow: variables.$panel-shadow;
+  color: variables.$panel-color;
+
+  label,
+  input:not([type="checkbox"]) {
+    width: 100%;
+  }
+
+  label {
+    display: block;
+    margin-bottom: variables.$padding-base-vertical;
+    font-weight: variables.$font-weight-bold;
+    line-height: inherit;
+
+    &[for="autologin"] {
+      @include forms.check;
+
+      margin-bottom: variables.$line-height-computed;
+    }
+
+    > a {
+      float: right;
+      font-weight: variables.$font-weight-normal;
+    }
+  }
+
+  input[type="text"],
+  input[type="password"] {
+    margin-bottom: variables.$panel-body-padding-vertical;
+  }
+
+  #login-submit {
+    padding-top: variables.$padding-base-vertical;
+    padding-bottom: variables.$padding-base-vertical;
+  }
+
+  table {
+    width: 100%;
+    margin: auto;
+    table-layout: fixed;
+  }
+
+  td {
+    padding: 0;
+
+    &:first-child {
+      width: variables.$login-form-label-width;
+      padding-right: variables.$table-cell-padding;
+      white-space: nowrap;
+    }
+
+    > label {
+      margin-bottom: variables.$panel-body-padding-vertical;
+    }
+
+    > input[type="submit"] {
+      width: auto;
+      margin-right: 0;
+    }
+  }
+
+  @each $adjustment, $languages in variables.$login-form-adjustments-map {
+    @each $language in $languages {
+      html[lang="#{$language}"] & td:first-child {
+        width: variables.$login-form-label-width + $adjustment * 1em;
+      }
+    }
+  }
+}
+
+
+// Two-factor authentication
+
+.controller-twofa {
+  .splitcontentleft {
+    width: auto;
+    padding-right: 0;
+  }
+}
+
+ul.twofa_backup_codes {
+  margin-left: 0;
+  padding: 0;
+  list-style-type: none;
+}

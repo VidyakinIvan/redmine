@@ -1,0 +1,73 @@
+@use "sass:color";
+@use "../variables";
+@use "../mixins/variants";
+
+// Priority icon
+
+@mixin priority-icon-base() {
+  @include variants.ti-icon-style;
+
+  &::before {
+    content: "\00a0";
+    width: variables.$priority-icon-size;
+    margin-right: variables.$priority-icon-space;
+  }
+}
+
+@mixin priority-icon($parent, $color, $icon) {
+  table.list tbody tr#{$parent} .priority,
+  .issue.details#{$parent} .attributes td.priority,
+  .issue.details#{$parent} .attribute.priority .value {
+    &::before {
+      @include variants.ti-icon-variant($icon);
+
+      color: $color;
+    }
+  }
+}
+
+
+// Tracker highlight
+
+@mixin tracker($parent, $background, $color) {
+  tr#{$parent} .id > a,
+  tr#{$parent} .issue_id > a,
+  a#{$parent}.issue,
+  a#{$parent},
+  .relations > span > a#{$parent},
+  .parent > a#{$parent} {
+    background-color: $background;
+    color: $color;
+    text-align: left;
+
+    &:hover {
+      @if color.channel($background, 'hue', $space: hsl) > 15deg and color.channel($background, 'hue', $space: hsl) < 40deg {
+        background-color: color.adjust(color.adjust($background, $hue: -8deg), $lightness: -8%);
+      } @else {
+        background-color: color.adjust($background, $lightness: -10%);
+      }
+
+      color: $color;
+    }
+  }
+
+  a#{$parent} {
+    &.closed {
+      color: color.mix($color, $background, 75%);
+
+      &::after {
+        border-top-color: rgba($color, .95);
+      }
+
+      &:hover::after {
+        border-top-color: rgba($color, .25);
+      }
+    }
+  }
+
+  tr#{$parent} .id > a {
+    &::before {
+      color: $color;
+    }
+  }
+}

@@ -1,0 +1,71 @@
+@use "sass:color";
+@use "sass:map";
+@use "../variables";
+
+// Initials avatars
+
+.avatar {
+  display: inline-flex;
+  border-radius: variables.$border-radius-large;
+  vertical-align: middle;
+}
+
+span[role="img"].avatar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  user-select: none;
+
+  $sizes: 13, 16, 22, 24, 40, 50;
+  @each $size in $sizes {
+    &.s#{$size} {
+      block-size: #{$size}px;
+      inline-size: #{$size}px;
+      font-size: $size * 0.4px;
+    }
+  }
+
+  @each $initials-id, $initials-colors in variables.$intitials-avatars-colors-map {
+    &.avatar-color-#{$initials-id} {
+      background: linear-gradient(to bottom right, color.change(map.get($initials-colors, background), $blackness: -40%), color.change(map.get($initials-colors, background), $blackness: 40%));
+      color: map.get($initials-colors, color);
+    }
+  }
+}
+
+h2 .avatar:not(.gravatar),
+h3 .avatar:not(.gravatar) {
+  margin-right: .5em;
+  margin-bottom: .4em;
+}
+
+// Gravatars
+
+img.gravatar {
+  position: relative;
+  top: -.15em;
+  overflow: hidden;
+  border-radius: variables.$border-radius-large;
+  line-height: 1;
+  vertical-align: middle;
+
+  h2 &,
+  h3 &,
+  h4 & {
+    margin-right: 5px;
+  }
+}
+
+// Administration -> /users
+
+.username img.gravatar {
+  margin-right: .5em;
+}
+
+// Used on 12px Gravatar img tags without the icon background
+
+.icon-gravatar {
+  margin-right: 5px;
+  float: left;
+}

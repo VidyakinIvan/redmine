@@ -1,0 +1,35 @@
+@use "../variables";
+@use "../mixins/variants";
+@use "../vendor/tabler-icons";
+
+// Flash messages
+
+@mixin flash($color, $background, $border, $link, $icon) {
+  border-color: $border;
+  background-color: $background;
+  color: $color;
+  text-align: left;
+
+  @if $icon == "true" {
+    $icon: tabler-icons.$ti-icon-check;
+  } @else if $icon == "warning" {
+    $icon: tabler-icons.$ti-icon-alert-triangle;
+  } @else if $icon == "exclamation" {
+    $icon: tabler-icons.$ti-icon-exclamation-circle;
+  }
+
+  @if $icon != "false" {
+    &::before {
+      @include variants.ti-icon-variant($icon);
+    }
+  } @else {
+    svg {
+      stroke: $color;
+    }
+  }
+
+  a {
+    color: $link;
+    font-weight: variables.$font-weight-bold;
+  }
+}

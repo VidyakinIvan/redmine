@@ -1,0 +1,462 @@
+@use "sass:list";
+@use "sass:string";
+@use "../variables";
+@use "../vendor/tabler-icons";
+@use "../mixins/variants";
+
+$icon-map: (
+  // Legacy icons
+  icon-add:                     tabler-icons.$ti-icon-circle-plus,
+  icon-edit:                    tabler-icons.$ti-icon-edit,
+  icon-copy:                    tabler-icons.$ti-icon-copy,
+  icon-duplicate:               tabler-icons.$ti-icon-copy-plus,
+  icon-del:                     tabler-icons.$ti-icon-trash,
+  icon-move:                    tabler-icons.$ti-icon-arrow-forward-up,
+  icon-save:                    tabler-icons.$ti-icon-device-floppy,
+  icon-download:                tabler-icons.$ti-icon-download,
+  icon-cancel:                  tabler-icons.$ti-icon-arrow-back-up,
+  icon-multiple:                tabler-icons.$ti-icon-box-multiple,
+  icon-folder:                  tabler-icons.$ti-icon-folder,
+  icon-package:                 tabler-icons.$ti-icon-package,
+  icon-user:                    tabler-icons.$ti-icon-user,
+  icon-project:                 tabler-icons.$ti-icon-packages,
+  icon-projects:                tabler-icons.$ti-icon-packages,
+  icon-help:                    tabler-icons.$ti-icon-help-circle,
+  icon-attachment:              tabler-icons.$ti-icon-paperclip,
+  icon-history:                 tabler-icons.$ti-icon-history,
+  icon-time-entry:              tabler-icons.$ti-icon-clock,
+  icon-time:                    tabler-icons.$ti-icon-clock,
+  icon-time-add:                tabler-icons.$ti-icon-clock-plus,
+  icon-stats:                   tabler-icons.$ti-icon-chart-bar,
+  icon-warning:                 tabler-icons.$ti-icon-alert-triangle,
+  icon-error:                   tabler-icons.$ti-icon-exclamation-circle,
+  icon-fav:                     tabler-icons.$ti-icon-star,
+  icon-fav-off:                 tabler-icons.$ti-icon-star-off,
+  icon-reload:                  tabler-icons.$ti-icon-refresh,
+  icon-lock:                    tabler-icons.$ti-icon-lock,
+  icon-locked:                  tabler-icons.$ti-icon-lock,
+  icon-unlock:                  tabler-icons.$ti-icon-lock-minus,
+  icon-checked:                 tabler-icons.$ti-icon-check,
+  icon-report:                  tabler-icons.$ti-icon-presentation,
+  icon-comment:                 tabler-icons.$ti-icon-message,
+  icon-comments:                tabler-icons.$ti-icon-messages,
+  icon-summary:                 tabler-icons.$ti-icon-bolt,
+  icon-server-authentication:   tabler-icons.$ti-icon-key,
+  icon-issue:                   tabler-icons.$ti-icon-sticker-2,
+  icon-zoom-in:                 tabler-icons.$ti-icon-zoom-in,
+  icon-zoom-out:                tabler-icons.$ti-icon-zoom-out,
+  icon-magnifier:               tabler-icons.$ti-icon-zoom,
+  icon-passwd:                  tabler-icons.$ti-icon-key,
+  icon-arrow-right:             tabler-icons.$ti-icon-arrow-big-right,
+  icon-test:                    tabler-icons.$ti-icon-arrow-big-right,
+  icon-sticky:                  tabler-icons.$ti-icon-arrow-big-right,
+  icon-email:                   tabler-icons.$ti-icon-mail,
+  icon-email-disabled:          tabler-icons.$ti-icon-mail-off,
+  icon-email-add:               tabler-icons.$ti-icon-mail-plus,
+  icon-ok:                      tabler-icons.$ti-icon-check,
+  icon-not-ok:                  tabler-icons.$ti-icon-x,
+  icon-link-break:              tabler-icons.$ti-icon-unlink,
+  icon-list:                    tabler-icons.$ti-icon-list,
+  icon-close:                   tabler-icons.$ti-icon-square-x,
+  icon-settings:                tabler-icons.$ti-icon-settings,
+  icon-group:                   tabler-icons.$ti-icon-users-group,
+  icon-groupnonmember:          tabler-icons.$ti-icon-users-group,
+  icon-groupanonymous:          tabler-icons.$ti-icon-users-group,
+  icon-roles:                   tabler-icons.$ti-icon-shield-cog,
+  icon-issue-edit:              tabler-icons.$ti-icon-edit,
+  icon-workflows:               tabler-icons.$ti-icon-jump-rope,
+  icon-custom-fields:           tabler-icons.$ti-icon-input-check,
+  icon-plugins:                 tabler-icons.$ti-icon-puzzle,
+  icon-news:                    tabler-icons.$ti-icon-news,
+  icon-issue-closed:            tabler-icons.$ti-icon-checkbox,
+  icon-issue-note:              tabler-icons.$ti-icon-message-dots,
+  icon-changeset:               tabler-icons.$ti-icon-git-commit,
+  icon-message:                 tabler-icons.$ti-icon-message,
+  icon-reply:                   tabler-icons.$ti-icon-messages,
+  icon-wiki-page:               tabler-icons.$ti-icon-file-pencil,
+  icon-document:                tabler-icons.$ti-icon-file-description,
+  icon-add-bullet:              tabler-icons.$ti-icon-circle-plus,
+  icon-shared:                  tabler-icons.$ti-icon-link,
+  icon-actions:                 tabler-icons.$ti-icon-dots,
+  icon-sort-handle:             tabler-icons.$ti-icon-arrows-move-vertical,
+  icon-expanded:                tabler-icons.$ti-icon-chevron-down,
+  icon-collapsed:               tabler-icons.$ti-icon-chevron-right,
+  icon-bookmark:                tabler-icons.$ti-icon-bookmark-plus,
+  icon-bookmark-off:            tabler-icons.$ti-icon-bookmark-minus,
+  icon-bookmarked-project:      tabler-icons.$ti-icon-bookmark,
+  icon-sorted-asc:              tabler-icons.$ti-icon-sort-ascending,
+  icon-sorted-desc:             tabler-icons.$ti-icon-sort-descending,
+  icon-toggle-plus:             tabler-icons.$ti-icon-square-plus,
+  icon-toggle-minus:            tabler-icons.$ti-icon-square-minus,
+  icon-clear-query:             tabler-icons.$ti-icon-square-x,
+  icon-import:                  tabler-icons.$ti-icon-database-import,
+  icon-file:                    tabler-icons.$ti-icon-file,
+  icon-copy-link:               tabler-icons.$ti-icon-link-plus,
+
+  // Non SVG plugins icons
+  banner-icon-edit:             tabler-icons.$ti-icon-pencil,
+  banner-icon-off:              tabler-icons.$ti-icon-x,
+);
+$icons-selector: ();
+
+@each $class, $icon in $icon-map {
+  $icons-selector: list.append($icons-selector, string.unquote(".#{$class}"), "comma");
+
+  .#{$class}:not(:has(svg)) {
+    @include variants.ti-icon-style;
+
+    background-image: none;
+
+    &::before {
+      @include variants.ti-icon-variant($icon);
+
+      font-size: 16px;
+    }
+
+    @if $class == "icon-folder" {
+      .open &::before {
+        @include variants.ti-icon-variant(tabler-icons.$ti-icon-folder-open);
+      }
+    }
+
+    @if $class == "icon-bookmarked-project" or $class == "icon-user" {
+      &.project::before {
+        content: none;
+      }
+    }
+  }
+}
+
+// File types legacy icons
+
+.icon-file:not(:has(svg)) {
+  &.text-plain::before             { @include variants.ti-icon-variant(tabler-icons.$ti-icon-file-description); }
+  &.text-x-c::before               { @include variants.ti-icon-variant(tabler-icons.$ti-icon-file-code); }
+  &.text-x-csharp::before          { @include variants.ti-icon-variant(tabler-icons.$ti-icon-file-code); }
+  &.text-x-java::before            { @include variants.ti-icon-variant(tabler-icons.$ti-icon-file-code); }
+  &.application-javascript::before { @include variants.ti-icon-variant(tabler-icons.$ti-icon-file-type-js); }
+  &.text-x-php::before             { @include variants.ti-icon-variant(tabler-icons.$ti-icon-file-type-php); }
+  &.text-x-ruby::before            { @include variants.ti-icon-variant(tabler-icons.$ti-icon-file-code); }
+  &.text-xml::before               { @include variants.ti-icon-variant(tabler-icons.$ti-icon-file-type-xml); }
+  &.text-css::before               { @include variants.ti-icon-variant(tabler-icons.$ti-icon-file-type-css); }
+  &.text-html::before              { @include variants.ti-icon-variant(tabler-icons.$ti-icon-file-type-html); }
+  &.image-gif::before              { @include variants.ti-icon-variant(tabler-icons.$ti-icon-file-digit); }
+  &.image-jpeg::before             { @include variants.ti-icon-variant(tabler-icons.$ti-icon-file-type-jpg); }
+  &.image-png::before              { @include variants.ti-icon-variant(tabler-icons.$ti-icon-file-type-png); }
+  &.image-tiff::before             { @include variants.ti-icon-variant(tabler-icons.$ti-icon-file-digit); }
+  &.application-pdf::before        { @include variants.ti-icon-variant(tabler-icons.$ti-icon-file-type-pdf); }
+
+  &.application-zip::before,
+  &.application-gzip::before       { @include variants.ti-icon-variant(tabler-icons.$ti-icon-file-zip); }
+}
+
+// SVG Icons
+
+.icon svg,
+.icon-only svg {
+  flex-shrink: 0;
+}
+
+svg {
+  &.icon-svg {
+    stroke-width: 1.5;
+    stroke: variables.$link-color;
+    fill: none;
+    vertical-align: middle;
+  }
+
+  &.icon-ok {
+    stroke: variables.$brand-success;
+  }
+
+  &.svg-loader {
+    transform-origin: center;
+    animation: spin 1s linear infinite;
+  }
+
+  &.icon-svg-filled {
+    stroke: none;
+    fill: variables.$link-color;
+  }
+
+  &.s20 {
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+
+  &.s18 {
+    width: 1.125rem;
+    height: 1.125rem;
+  }
+
+  &.s16 {
+    width: 1rem;
+    height: 1rem;
+  }
+
+  &.s14 {
+    width: 0.875rem;
+    height: 0.875rem;
+  }
+
+  &.s12 {
+    width: 0.75rem;
+    height: 0.75rem;
+  }
+}
+
+a.icon:hover svg,
+a.icon-only:hover svg {
+  stroke: variables.$link-hover-color;
+}
+
+.icon-error svg.icon-svg {
+  stroke: variables.$brand-danger;
+}
+
+.icon-warning svg.icon-svg {
+  stroke: variables.$brand-warning;
+}
+
+.icon-fav svg.icon-svg:has(use[href$="#icon--fav"]) {
+  fill: variables.$yellow;
+}
+
+span.icon-label {
+  margin-left: variables.$icon-space;
+}
+
+
+// Buttons icons
+
+.icon,
+.icon-only {
+  display: inline-flex;
+  align-items: center;
+  vertical-align: middle;
+}
+
+.icon-only {
+  width: variables.$icon-width;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+// A empty icon should behave more like icon-only
+
+a.icon:empty {
+  display: inline-block;
+}
+
+
+// Zoom icons
+
+.icon-zoom-in + .icon-zoom-out {
+  margin-left: variables.$padding-small-vertical;
+}
+
+
+// Alternative icons
+
+.atom {
+  @include variants.ti-icon-style;
+
+  &::before {
+    @include variants.ti-icon-variant(tabler-icons.$ti-icon-rss);
+  }
+}
+
+.sort {
+  @include variants.ti-icon-style("after");
+
+  padding-left: 0;
+
+  &::after {
+    margin-right: 0;
+    margin-left: .2em;
+  }
+
+  &.asc::after {
+    @include variants.ti-icon-variant(tabler-icons.$ti-icon-sort-ascending);
+  }
+
+  &.desc::after {
+    @include variants.ti-icon-variant(tabler-icons.$ti-icon-sort-descending);
+  }
+
+  .sort-by-id &,
+  .sort-by-done-ratio &,
+  .sort-by-estimated-hours &,
+  .sort-by-spent-hours & {
+    &.asc::after  { @include variants.ti-icon-variant(tabler-icons.$ti-icon-sort-ascending-numbers); }
+    &.desc::after { @include variants.ti-icon-variant(tabler-icons.$ti-icon-sort-descending-numbers); }
+  }
+
+  .sort-by-assigned-to &,
+  .sort-by-subject & {
+    &.asc::after  { @include variants.ti-icon-variant(tabler-icons.$ti-icon-sort-ascending-letters); }
+    &.desc::after { @include variants.ti-icon-variant(tabler-icons.$ti-icon-sort-descending-letters); }
+  }
+}
+
+em.info.error {
+  @include variants.ti-icon-style;
+
+  &::before {
+    @include variants.ti-icon-variant(tabler-icons.$ti-icon-exclamation-circle);
+  }
+}
+
+div.wiki {
+  .external {
+    @include variants.ti-icon-style;
+
+    &::before {
+      @include variants.ti-icon-variant(tabler-icons.$ti-icon-external-link);
+
+      display: inline;
+      margin-right: .3em;
+      font-size: .8em;
+    }
+  }
+}
+
+.other-formats {
+  %other-format {
+    @include variants.ti-icon-style;
+
+    background-image: none;
+
+    &::before {
+      margin-right: .3em;
+    }
+  }
+
+  .atom {
+    @extend %other-format;
+  }
+
+  .pdf {
+    @extend %other-format;
+
+    &::before {
+      @include variants.ti-icon-variant(tabler-icons.$ti-icon-file-type-pdf);
+    }
+  }
+
+  .html {
+    @extend %other-format;
+
+    &::before {
+      @include variants.ti-icon-variant(tabler-icons.$ti-icon-file-type-html);
+    }
+  }
+
+  .txt {
+    @extend %other-format;
+
+    &::before {
+      @include variants.ti-icon-variant(tabler-icons.$ti-icon-file-type-txt);
+    }
+  }
+
+  .csv {
+    @extend %other-format;
+
+    &::before {
+      @include variants.ti-icon-variant(tabler-icons.$ti-icon-file-type-csv);
+    }
+  }
+
+  .png {
+    @extend %other-format;
+
+    &::before {
+      @include variants.ti-icon-variant(tabler-icons.$ti-icon-file-type-png);
+    }
+  }
+}
+
+
+// Drag-and-drop sorting
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.sort-handle {
+  cursor: move;
+
+  &.ajax-loading {
+    @include variants.ti-icon-style;
+
+    &::before {
+      @include variants.ti-icon-variant(tabler-icons.$ti-icon-refresh);
+
+      animation: spin 1s linear infinite;
+      color: variables.$gray-750;
+    }
+  }
+}
+
+
+// Colorize
+
+#admin-menu {
+  li {
+    > a {
+      .icon-svg {
+        stroke: variables.$gray-900;
+      }
+    }
+  }
+}
+
+a.icon,
+a.icon-only {
+  @include variants.icon-variant(default);
+}
+
+a.icon-edit,
+a.icon-copy,
+a.icon-time-add {
+  @include variants.icon-variant(info);
+}
+
+a.icon-add,
+a.icon-save,
+.icon-checked,
+a.icon-checked,
+a.icon-reload {
+  @include variants.icon-variant(success);
+}
+
+a.icon-del,
+a.remove-upload,
+a.icon-bookmark {
+  @include variants.icon-variant(danger);
+}
+
+#content .other-formats {
+   a {
+    @include variants.icon-variant(info, false);
+
+    &.atom {
+      @include variants.icon-variant(warning, false);
+    }
+
+    &.csv {
+      @include variants.icon-variant(success, false);
+    }
+
+    &.pdf {
+      @include variants.icon-variant(danger, false);
+    }
+  }
+}

@@ -1,0 +1,138 @@
+@use "../variables";
+
+// Repository view
+
+.revision-info {
+  margin-bottom: variables.$line-height-computed;
+
+  tbody > tr > td {
+    padding-right: variables.$table-cell-padding;
+    padding-bottom: variables.$table-condensed-cell-padding;
+
+    + td {
+      font-family: variables.$font-family-monospace;
+    }
+  }
+}
+
+#related-issues {
+  margin: variables.$line-height-computed 0;
+
+  li > a {
+    margin-left: .5em;
+  }
+}
+
+ul.properties {
+  padding: 0;
+  color: variables.$gray-750;
+  font-size: variables.$font-size-small;
+
+  li {
+    list-style-type: none;
+
+    span {
+      font-style: italic;
+    }
+  }
+}
+
+tr.changeset {
+  td.revision_graph {
+    width: 15%;
+    background-color: #fffffb;
+  }
+
+  td.id {
+    font-family: variables.$font-family-monospace;
+  }
+
+  td.author,
+  td.committed_on {
+    width: 15%;
+    text-align: center;
+    white-space: nowrap;
+  }
+
+  td.comments {
+    p {
+      margin-bottom: 0;
+    }
+  }
+
+  ul,
+  ol {
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+}
+
+#content #changes-legend {
+  font-size: 1em;
+
+  .change {
+    margin-left: 8px;
+  }
+}
+
+.changeset-changes {
+  .change {
+    margin-top: variables.$table-condensed-cell-padding;
+    color: variables.$gray-800;
+  }
+}
+
+#changes-legend > li.change,
+.changeset-changes ul > li.change {
+  &.folder {
+    ul > li.change {
+      padding-left: 18px;
+    }
+  }
+}
+
+#changes-legend > li.change {
+  padding-left: 18px;
+}
+
+.changeset-changes ul > li.change {
+  padding-left: 0;
+}
+
+
+// Diff
+
+.diff_out {
+  background: variables.$diff-out-bg-light;
+
+  span {
+    background: variables.$diff-out-bg;
+  }
+}
+
+.diff_in {
+  background: variables.$diff-in-bg-light;
+
+  span {
+    background: variables.$diff-in-bg;
+  }
+}
+
+.text-diff {
+  margin-bottom: variables.$line-height-computed;
+  padding: variables.$panel-body-padding;
+  border: 1px solid variables.$panel-border;
+  border-radius: variables.$panel-border-radius;
+  background: variables.$body-bg;
+  color: variables.$panel-color;
+  font-family: variables.$font-family-monospace;
+  white-space: pre-wrap;
+
+  .diff_out {
+    background: variables.$diff-out-bg;
+  }
+
+  .diff_in {
+    background: variables.$diff-in-bg;
+  }
+}

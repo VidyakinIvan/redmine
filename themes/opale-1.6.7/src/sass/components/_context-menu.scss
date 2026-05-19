@@ -1,0 +1,74 @@
+@use "sass:color";
+@use "sass:map";
+@use "../variables";
+@use "../mixins/shadows";
+@use "../mixins/variants";
+
+#wrapper {
+  .context-menu-selection {
+    &,
+    > td {
+      background-color: variables.$component-active-bg !important;
+      color: variables.$component-active-color !important;
+    }
+
+    a,
+    a:hover {
+      color: variables.$component-active-color !important;
+    }
+
+    @if variables.$color-trackers {
+      @each $tracker-id, $tracker-colors in variables.$tracker-colors-map {
+        &.issue.tracker-#{$tracker-id} .id {
+          a,
+          a:hover {
+            color: map.get($tracker-colors, color) !important;
+          }
+        }
+      }
+    }
+
+    svg.icon-svg {
+      stroke: variables.$component-active-color !important;
+    }
+
+    > td.short_description > div.wiki {
+      color: variables.$brand-text;
+
+      @each $markdown-alert, $markdown-alert-color in variables.$markdown-alerts-map {
+        .markdown-alert-#{$markdown-alert} .markdown-alert-title {
+          color: variables.$brand-text;
+        }
+      }
+    }
+  }
+
+  #context-menu {
+    > ul,
+    > ul > li > ul {
+      @include shadows.nice-shadow(2);
+
+      border: 0 none !important;
+    }
+
+    ul {
+      padding: 3px;
+    }
+
+    li {
+      padding: 0;
+      border: 0 none;
+      border-radius: variables.$border-radius-small;
+      background: transparent;
+
+      &:hover {
+        background-color: variables.$pagination-hover-bg;
+      }
+    }
+
+    a.disabled,
+    a.disabled:hover {
+      color: variables.$gray-750;
+    }
+  }
+}

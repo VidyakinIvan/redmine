@@ -1,0 +1,107 @@
+@use "../variables";
+@use "../mixins/flash";
+@use "../mixins/variants";
+
+// Flash & error messages
+
+
+#errorExplanation,
+div.flash,
+.nodata,
+.warning,
+.conflict {
+  margin-bottom: variables.$line-height-computed;
+  padding: variables.$padding-large-vertical variables.$padding-large-horizontal;
+  border: 1px solid variables.$flash-warning-border;
+  border-radius: variables.$border-radius-large;
+
+  &:not(:has(svg)) {
+    padding-left: variables.$padding-large-horizontal + 8px + 16px;
+    background-repeat: no-repeat;
+    background-position: variables.$padding-large-horizontal 50%;
+
+    @include variants.ti-icon-style;
+
+    &::before {
+      margin-left: -(8px + 16px);
+      float: left;
+      line-height: variables.$line-height-computed;
+    }
+  }
+
+  > :last-child {
+    margin-bottom: 0;
+  }
+}
+
+.warning,
+.conflict,
+.nodata {
+  @include flash.flash(variables.$flash-warning-text, variables.$flash-warning-bg, variables.$flash-warning-border, variables.$flash-warning-link, "false");
+
+  &:not(:has(svg)) {
+    @include flash.flash(variables.$flash-warning-text, variables.$flash-warning-bg, variables.$flash-warning-border, variables.$flash-warning-link, "warning");
+  }
+}
+
+.flash.notice {
+  @include flash.flash(variables.$flash-success-text, variables.$flash-success-bg, variables.$flash-success-border, variables.$flash-success-link, "false");
+
+  &:not(:has(svg)) {
+    @include flash.flash(variables.$flash-success-text, variables.$flash-success-bg, variables.$flash-success-border, variables.$flash-success-link, "true");
+  }
+}
+
+#errorExplanation,
+.flash.error {
+  @include flash.flash(variables.$flash-error-text, variables.$flash-error-bg, variables.$flash-error-border, variables.$flash-error-link, "false");
+
+  &:not(:has(svg)) {
+    @include flash.flash(variables.$flash-error-text, variables.$flash-error-bg, variables.$flash-error-border, variables.$flash-error-link, "exclamation");
+  }
+}
+
+
+div.flash,
+#errorExplanation,
+.conflict {
+  svg.icon-svg {
+    margin-right: variables.$icon-space;
+  }
+}
+
+#errorExplanation:has(svg) {
+  position: relative;
+  padding-left: variables.$padding-large-horizontal + 8px + 16px;
+
+  > svg.icon-svg {
+    position: absolute;
+    top: 50%;
+    bottom: 50%;
+    margin-top: -9px;
+    margin-left: -(8px + 16px);
+  }
+}
+
+.nodata:not(:has(svg)) {
+  padding-left: variables.$padding-large-horizontal;
+  text-align: center;
+
+  &::before {
+    margin-left: 0;
+    float: none;
+  }
+}
+
+#errorExplanation {
+  margin-top: .5em;
+
+  ul {
+    font-size: .9em;
+  }
+
+  h2,
+  p {
+    display: none;
+  }
+}

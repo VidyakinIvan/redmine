@@ -1,0 +1,453 @@
+@use "sass:color";
+@use "sass:map";
+@use "sass:math";
+@use "../variables";
+
+.wiki.wiki-page {
+  margin-bottom: variables.$line-height-computed;
+  font-size: variables.$wiki-font-size;
+
+  @if variables.$wiki-page-more-vertical-space {
+    ul,
+    ol {
+      li {
+        margin-top: .25em;
+      }
+
+      ul,
+      ol {
+        margin-top: .25em;
+        margin-bottom: .25em;
+
+        li {
+          margin-top: .125em;
+        }
+      }
+    }
+  }
+}
+
+.controller-wiki {
+  .wiki > .preview,
+  .wiki.wiki-preview {
+    font-size: variables.$wiki-font-size;
+  }
+}
+
+div.wiki {
+  color: variables.$wiki-text;
+  line-height: variables.$wiki-line-height;
+
+  /* stylelint-disable selector-list-comma-newline-after */
+  h1, .h1,
+  h2, .h2,
+  h3, .h3,
+  h4, .h4,
+  h5, .h5,
+  h6, .h6 {
+    margin-top: 1em;
+    margin-bottom: variables.$wiki-font-size;
+    font-weight: variables.$headings-font-weight;
+    line-height: variables.$headings-line-height;
+  }
+
+  h1, .h1 {
+    padding-bottom: .3em;
+    border-bottom: 1px solid variables.$gray-400;
+    font-size: variables.$font-size-h1;
+    line-height: 1.2;
+  }
+
+  h2, .h2 {
+    padding-bottom: .3em;
+    border-bottom: 1px solid variables.$gray-400;
+    font-size: variables.$font-size-h2;
+    line-height: 1.225;
+  }
+
+  h3, .h3 {
+    font-size: variables.$font-size-h3;
+    line-height: 1.43;
+  }
+
+  h4, .h4 {
+    font-size: variables.$font-size-h4;
+  }
+
+  h5, .h5 {
+    font-size: variables.$font-size-h5;
+  }
+
+  h6, .h6 {
+    color: variables.$gray-750;
+    font-size: variables.$font-size-h6;
+  }
+
+  .text-normal {
+    font-weight: variables.$font-weight-normal;
+  }
+
+  > a:first-child {
+    + h1,
+    + h2,
+    + h3,
+    + h4,
+    + h5,
+    + h6 {
+      margin-top: 0;
+    }
+  }
+
+  > a:target {
+    + h2,
+    + h3,
+    + h4,
+    + h5,
+    + h6 {
+      &::before {
+        content: "#";
+        display: inline-block;
+        width: .7em;
+        margin-left: -.7em;
+        color: variables.$headings-anchor-color-active;
+        font-weight: variables.$font-weight-normal;
+      }
+    }
+  }
+
+  > :last-child {
+    margin-bottom: 0;
+  }
+
+  blockquote {
+    margin-bottom: 1em;
+
+    > :first-child {
+      margin-top: 0;
+    }
+
+    > :last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  .contextual {
+    a {
+      opacity: variables.$icon-opacity;
+
+      &:hover {
+        opacity: variables.$icon-hover-opacity;
+      }
+    }
+  }
+
+  a {
+    word-break: break-all;
+  }
+
+  p,
+  ul,
+  ol {
+    margin-bottom: 1em;
+  }
+
+  ul,
+  ol {
+    padding-left: 1.5em;
+
+    ul,
+    ol {
+      margin-bottom: 0;
+    }
+  }
+
+  li > p {
+    margin-top: .25em;
+    margin-bottom: 0;
+  }
+
+  table {
+    display: block;
+    width: 100%;
+    margin-bottom: variables.$line-height-computed;
+    overflow: auto;
+    word-break: normal;
+    word-break: keep-all;
+  }
+
+  /* Textile */
+  tbody:first-child tr:nth-child(2n),
+  /* Markdown */
+  thead + tbody tr:nth-child(2n-1) {
+    background-color: variables.$table-bg-accent;
+  }
+
+  td,
+  th {
+    padding: variables.$table-cell-padding;
+    border: 1px solid variables.$table-border-color;
+  }
+
+  .noborder,
+  .wiki-class-noborder {
+    border: 0 none;
+
+    td,
+    th {
+      border: 0 none;
+    }
+  }
+
+  a.new {
+    color: variables.$brand-danger;
+  }
+
+  code {
+    padding: .2em .33em;
+    border-radius: variables.$border-radius-base;
+    background-color: color.adjust(variables.$gray-500, $alpha: -.5);
+    font-size: variables.$font-size-small;
+  }
+
+  .pre-wrapper {
+    position: relative;
+
+    &:hover {
+      a.copy-pre-content-link {
+        display: block;
+      }
+    }
+
+    a.copy-pre-content-link {
+      display: none;
+      position: absolute;
+      top: 3px;
+      right: 3px;
+      padding: variables.$wiki-copy-pre-padding;
+      border: 1px solid variables.$component-border;
+      border-radius: variables.$border-radius-base;
+      background: variables.$white;
+      cursor: pointer;
+    }
+  }
+
+  pre {
+    width: auto;
+    margin-bottom: 1.15em;
+    padding: 12px 15px;
+    overflow: auto hidden;
+    border-radius: variables.$border-radius-base;
+    background-color: color.adjust(variables.$gray-500, $alpha: -.7);
+    font-size: variables.$font-size-small;
+
+    code {
+      padding: 0;
+      border-radius: 0;
+      background-color: transparent;
+      font-size: 1em;
+    }
+  }
+
+  img {
+    max-width: 100%;
+    vertical-align: middle;
+  }
+
+  .toc {
+    display: table;
+    max-width: 45%;
+    margin-bottom: variables.$line-height-computed;
+    margin-left: 0;
+    padding: variables.$padding-small-vertical variables.$padding-small-horizontal;
+    list-style-type: none;
+    border: 1px solid variables.$toc-border;
+    border-radius: variables.$border-radius-base;
+    background-color: variables.$toc-bg;
+    box-shadow: variables.$toc-shadow;
+    color: variables.$toc-text;
+    font-size: variables.$font-size-small;
+
+    a {
+      color: variables.$toc-link;
+      font-weight: variables.$font-weight-normal;
+      text-decoration: none;
+
+      &:hover {
+        color: variables.$toc-link-hover;
+        text-decoration: underline;
+      }
+    }
+
+    &.right {
+      margin-right: 0;
+      margin-left: variables.$line-height-computed;
+      float: right;
+    }
+
+    &.left {
+      margin-right: variables.$line-height-computed;
+      margin-left: 0;
+      float: left;
+    }
+
+    ul {
+      margin: 0;
+      padding: 0;
+      font-size: variables.$font-size-small;
+
+      ul {
+        font-size: 1em;
+      }
+    }
+
+    li {
+      /* stylelint-disable selector-max-compound-selectors */
+      margin: 0;
+
+      li {
+        margin-left: 1.5em;
+        list-style-type: disc;
+
+        li {
+          list-style-type: circle;
+
+          li {
+            list-style-type: square;
+          }
+        }
+      }
+    }
+  }
+
+  .toc-active-prev + .toc {
+    padding-left: variables.$padding-large-horizontal;
+    border-left: 4px solid variables.$toc-active-border;
+
+    a {
+      color: variables.$toc-active-link;
+
+      &:focus,
+      &:hover {
+        color: variables.$toc-active-link-hover;
+      }
+    }
+  }
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  .wiki-anchor {
+    display: none;
+    margin-left: 5px;
+    color: variables.$headings-anchor-color !important; /* stylelint-disable-line declaration-no-important */
+    text-decoration: none !important; /* stylelint-disable-line declaration-no-important */
+  }
+
+  &:hover {
+    .wiki-anchor {
+      display: inline;
+    }
+  }
+
+  img {
+    display: inline-block;
+    max-width: 100%;
+    vertical-align: middle;
+  }
+}
+
+p.footnote {
+  margin-bottom: 5px;
+
+  &::before {
+    content: "";
+    display: block;
+    width: 300px;
+    margin-top: variables.$line-height-computed;
+    padding-top: variables.$line-height-computed * .5;
+    border-top: 1px solid variables.$gray-400;
+  }
+
+  + p.footnote::before {
+    display: none;
+  }
+}
+
+.ltr,
+.wiki-class-ltr {
+  direction: ltr;
+}
+
+.rtl,
+.wiki-class-rtl {
+  direction: rtl;
+}
+
+.preview {
+  margin-top: variables.$line-height-computed;
+  padding: variables.$padding-wiki;
+  border: 1px solid variables.$gray-400;
+  background-color: variables.$body-bg;
+}
+
+#wiki_add_attachment {
+  padding-top: variables.$line-height-computed;
+  border-top: 1px solid variables.$gray-400;
+
+  > p {
+    margin-bottom: 0;
+    float: left;
+  }
+
+  > form {
+    padding-top: variables.$line-height-computed;
+    clear: left;
+  }
+
+  .collapsible & {
+    padding-top: 0;
+    border-top: 0;
+
+    > form {
+      padding-top: 0;
+    }
+  }
+}
+
+.markdown-alert {
+  margin-left: variables.$mardown-alerts-margin;
+  padding-left: variables.$mardown-alerts-padding;
+  border-left: variables.$mardown-alerts-border;
+
+  &-title {
+    font-weight: bold;
+  }
+
+  @each $markdown-alert, $markdown-alert-color in variables.$markdown-alerts-map {
+    &-#{$markdown-alert} {
+      border-color: map.get($markdown-alert-color, color);
+
+      .markdown-alert-title {
+        color: color.adjust(map.get($markdown-alert-color, color), $lightness: -17%);
+
+        svg {
+          stroke: color.adjust(map.get($markdown-alert-color, color), $lightness: -17%);
+        }
+      }
+    }
+  }
+
+  ul.projects & {
+    padding-left: 5px;
+
+    p,
+    ul,
+    ol {
+      margin-bottom: .5em;
+    }
+  }
+}

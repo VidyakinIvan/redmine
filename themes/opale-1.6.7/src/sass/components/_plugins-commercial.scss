@@ -1,0 +1,392 @@
+@use "sass:color";
+@use "sass:map";
+@use "../variables";
+@use "../functions/parse-length";
+@use "../mixins/shadows";
+
+// RedmineUP
+// https://www.redmineup.com/pages/plugins
+
+h2 {
+  .scope_title,
+  .live_search,
+  .tags {
+    vertical-align: top;
+  }
+
+  .live_search {
+    margin-left: variables.$padding-side * .5;
+  }
+
+  .tags {
+    .tag_list {
+      margin-top: 0;
+    }
+  }
+}
+
+div.details {
+  &.contact,
+  &.product {
+    padding: 0;
+    border: 0;
+    background: transparent;
+  }
+}
+
+
+// Redmine Agile
+// https://www.redmineup.com/pages/plugins/agile
+
+html.agile-board-fullscreen .icon.icon-fullscreen {
+  padding: (variables.$padding-small-vertical - 1px) variables.$padding-small-vertical;
+  font-size: 0;
+  text-align: center;
+  text-indent: 0;
+
+  @include shadows.nice-shadow(1);
+
+  &::before {
+    margin: 0;
+  }
+}
+
+@if variables.$agile-board-customize {
+  .agile-board {
+    table.list.issues-board {
+      tbody tr {
+        background-color: variables.$body-bg;
+
+        > td.issue-status-col {
+          padding: 0;
+          padding-left: parse-length.parse-length(variables.$agile-issue-card-margin, left);
+          background-color: variables.$agile-board-background;
+
+          &.closed .issue-card {
+            background: variables.$agile-issue-card-closed-background;
+          }
+        }
+      }
+    }
+
+    .issue-card {
+      margin: variables.$agile-issue-card-margin;
+      margin-left: 0;
+      padding: variables.$agile-issue-card-padding;
+      border: 1px solid variables.$agile-issue-card-border;
+      border-width: variables.$agile-issue-card-border-width;
+      border-radius: variables.$agile-issue-card-border-radius;
+      background-color: variables.$agile-issue-card-background;
+      color: variables.$agile-issue-card-color;
+
+      @include shadows.nice-shadow(1);
+
+      &.ui-sortable-helper {
+        @include shadows.nice-shadow(4);
+      }
+
+      &:not(.context-menu-selection) {
+        .attributes,
+        em.info,
+        span.hours {
+          color: variables.$text-color;
+        }
+      }
+
+      @each $class, $color in variables.$agile-issue-card-color-map {
+        &.#{$class} {
+          border-color: map.get($color, border);
+          background-color: map.get($color, background);
+        }
+      }
+
+      .checklist,
+      .info,
+      .sub-issues {
+        border-color: color.adjust(variables.$black, $alpha: -.85);
+      }
+
+      p.issue-id,
+      p.name {
+        margin-bottom: 5px;
+
+        &:last-of-type {
+          margin-bottom: 0;
+        }
+      }
+
+      p.issue-id {
+        line-height: 1;
+      }
+
+      p.project {
+        border-radius: variables.$agile-issue-card-border-radius - 1px;
+        border-color: color.adjust(variables.$black, $alpha: -.85);
+        background-clip: padding-box;
+      }
+
+      p.name {
+        font-weight: variables.$font-weight-bold;
+      }
+    }
+  }
+
+  @each $class, $color in variables.$agile-issue-card-color-map {
+    @if map.get($color, link) != variables.$link-color {
+      .#{$class} {
+        a {
+          color: map.get($color, link);
+        }
+      }
+    }
+  }
+}
+
+.agile-board {
+  .quick-comment {
+    textarea {
+      margin-bottom: parse-length.parse-length(variables.$agile-issue-card-padding, bottom);
+    }
+  }
+}
+
+
+.controller-agile_charts #main {
+  @if variables.$css-grid-layout {
+    > div:not(#content, #sidebar) {
+      grid-area: footer;
+    }
+  } @else if variables.$flexbox-layout {
+    flex-wrap: wrap;
+
+    > #footer {
+      flex: 1 0 auto;
+      order: 3;
+    }
+  }
+
+  // Page layout on Agile charts is broken, and with "Go to top" link
+  // from https://github.com/alphanodes/additionals plugin enabled
+  // the chart expands and resize event is triggered indefinitely.
+  // Hiding the "Go to top" link fixes this issue.
+  .gototop {
+    display: none;
+  }
+}
+
+
+// Redmine CRM
+// https://www.redmineup.com/pages/plugins/crm
+
+table.sidebar.attributes {
+  tr {
+    th,
+    td {
+      padding: parse-length.parse-length(variables.$table-condensed-cell-padding, top) 0;
+      vertical-align: top;
+    }
+
+    th {
+      padding-right: parse-length.parse-length(variables.$table-condensed-cell-padding, right);
+    }
+  }
+}
+
+div.add-note {
+  input,
+  textarea {
+    margin-bottom: variables.$line-height-computed;
+  }
+}
+
+@if variables.$table-list-highlight-rows {
+  table.contacts.index {
+    > tbody > tr:nth-child(n):hover {
+      background-color: variables.$table-bg-hover;
+    }
+  }
+}
+
+
+// Redmine Tags
+// https://www.redmineup.com/pages/plugins/tags
+
+.select2 {
+  .filter .values & {
+    min-width: 180px;
+    margin: 0;
+  }
+
+  &-container.select2-container--default {
+    color: variables.$text-color;
+
+    .select2-selection--single,
+    .select2-selection--multiple {
+      min-height: variables.$input-height-base;
+      line-height: variables.$line-height-base;
+    }
+
+    .select2-selection--single {
+      height: variables.$input-height-base;
+
+      .select2-selection__rendered {
+        padding-top: variables.$input-padding-vertical;
+        padding-bottom: variables.$input-padding-vertical;
+        border: 0;
+        font-size: variables.$font-size-base;
+        line-height: variables.$line-height-base;
+      }
+
+      .select2-selection__arrow {
+        height: variables.$input-height-base;
+      }
+
+      .select2-selection__clear {
+        border: 0;
+      }
+    }
+
+    .select2-selection--multiple {
+      .select2-selection__rendered {
+        padding: 0 3px 3px;
+      }
+
+      .select2-selection__choice {
+        margin-top: 3px;
+        margin-right: 3px;
+        padding-top: 0;
+        padding-bottom: 0;
+      }
+
+      .select2-search--inline {
+        input {
+          height: auto;
+          padding-top: 0;
+          padding-bottom: 0;
+          line-height: inherit;
+        }
+      }
+    }
+
+    .select2-selection {
+      transition:
+        border-color variables.$transition-time ease-in-out,
+        box-shadow variables.$transition-time ease-in-out;
+      border-color: variables.$input-border;
+      background-clip: padding-box;
+      box-shadow: inset 0 1px 2px rgb(0 0 0 / .075);
+
+      &.icon {
+        padding-left: 18px + 8px;
+
+        &::before {
+          position: absolute;
+          top: 50%;
+          left: 8px;
+          margin: (variables.$font-size-base * -.5) 0 0;
+        }
+      }
+    }
+
+    &.select2-container {
+      &:focus,
+      * {
+        outline: none;
+      }
+
+      &--open,
+      &--focus {
+        .select2-selection {
+          border-color: color.adjust(variables.$input-border-focus, $alpha: variables.$input-border-focus-alpha);
+          outline: 0;
+          box-shadow: inset 0 1px 2px color.adjust(variables.$black, $alpha: -.925), 0 0 0 2px color.adjust(variables.$input-border-focus, $alpha: variables.$input-shadow-focus-alpha);
+        }
+      }
+    }
+
+    .select2-search__field {
+      &:focus {
+        border-color: color.adjust(variables.$input-border-focus, $alpha: variables.$input-border-focus-alpha);
+      }
+    }
+  }
+}
+
+span.tag-label-color {
+  @at-root body & {
+    padding: 0 !important; // stylelint-disable-line declaration-no-important
+    border: 0 !important; // stylelint-disable-line declaration-no-important
+    border-radius: variables.$badge-border-radius;
+    box-shadow: inset 0 -1px 0 color.adjust(variables.$black, $alpha: -.88);
+    font-size: variables.$font-size-small-px;
+
+    a,
+    span {
+      font-family: inherit;
+      font-size: inherit;
+    }
+
+    > a,
+    > span {
+      display: inline-block;
+      padding: 1px 5px;
+      text-shadow: 0 1px 0 color.adjust(variables.$black, $alpha: -.8);
+    }
+
+    a {
+      &:hover {
+        opacity: .8;
+      }
+    }
+  }
+}
+
+.list td.tags {
+  padding-bottom: max(parse-length.parse-length(variables.$table-cell-padding, bottom) - 2px - 1px, 0);
+
+  span.tag-label-color {
+    margin-bottom: 2px;
+    margin-left: 0;
+    transform: translateY(-1px);
+  }
+}
+
+
+// Redmine Checklists
+// https://www.redmineup.com/pages/plugins/checklists
+
+.checklist {
+  li {
+    a {
+      margin: 0;
+      line-height: inherit;
+    }
+  }
+}
+
+#checklist_form_items {
+  .checklist-item {
+    display: block;
+    margin: 0 0 2px;
+
+    &.new {
+      margin: variables.$padding-base-vertical 0 0;
+    }
+
+    input[type="checkbox"] {
+      position: relative;
+      top: 2px;
+      vertical-align: baseline;
+    }
+
+    input[type="button"] {
+      margin-right: 4px;
+    }
+  }
+}
+
+#checklist-menu.ui-menu {
+  a {
+    padding: 2px 0 2px 24px;
+  }
+}

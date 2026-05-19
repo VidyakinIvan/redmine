@@ -1,0 +1,89 @@
+@use "../variables";
+@use "../mixins/variants";
+
+#main {
+  #sidebar {
+    @if variables.$fixed-layout {
+      will-change: margin, opacity;
+      transition: margin .5s, opacity .5s;
+      opacity: 1;
+    } @else {
+      will-change: margin;
+      transition: margin .5s;
+    }
+  }
+
+  &.collapsedsidebar #sidebar {
+    @if variables.$fixed-layout {
+      opacity: 0;
+    }
+
+    @if variables.$sidebar-position == "left" {
+      margin-left: -(variables.$sidebar-width);
+    } @else {
+      margin-right: -(variables.$sidebar-width);
+    }
+  }
+
+  #sidebar-switch-panel {
+    display: block;
+    position: absolute;
+    z-index: 2;
+    top: variables.$sidebar-switch-top-position;
+    width: variables.$sidebar-switch-size;
+    height: variables.$sidebar-switch-size;
+    will-change: margin;
+    transition: margin .5s;
+    border: 2px solid variables.$gray-700;
+    border-radius: variables.$border-radius-base;
+    background-color: variables.$gray-200;
+    background-position: center;
+    line-height: 1;
+    user-select: none;
+
+    @if variables.$sidebar-position == "left" {
+      left: 0;
+
+      @if not variables.$fixed-layout {
+        border-left: 0;
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+      }
+
+      .icon-svg {
+        transform: rotate(180deg);
+      }
+    } @else {
+      right: 0;
+
+      @if not variables.$fixed-layout {
+        border-right: 0;
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+      }
+    }
+
+    .icon-svg {
+      width: variables.$sidebar-switch-size;
+      height: variables.$sidebar-switch-size;
+    }
+
+    @media screen and (max-width: variables.$redmine-responsive-max) {
+      display: none;
+    }
+
+    &:hover,
+    &:focus,
+    &:active {
+      background-color: variables.$gray-300;
+    }
+  }
+
+  &.collapsedsidebar #sidebar-switch-panel {
+    @if variables.$sidebar-position == "left" {
+      margin-left: variables.$sidebar-width;
+    } @else {
+      margin-right: variables.$sidebar-width;
+    }
+  }
+}

@@ -1,0 +1,49 @@
+@use "variables";
+@use "functions";
+@use "mixins";
+
+
+// Unmodified code from other projects
+
+@use "vendor/normalize";
+@use "vendor/bootstrap";
+@use "vendor/tabler-icons";
+
+
+// Redmine's core elements
+
+@use "components/reboot";
+@use "components/badges";
+@use "components/buttons";
+@use "components/forms";
+@use "components/tabs";
+@use "components/pagination";
+@use "components/content";
+@use "components/sidebar-switch-panel";
+@use "components/context-menu";
+@use "components/gravatar";
+@use "components/lists";
+@use "components/issue";
+@use "components/login";
+@use "components/admin";
+@use "components/rouge";
+@use "components/gantt";
+@use "components/calendar";
+@use "components/progress-bar";
+@use "components/wiki";
+@use "components/elements";
+@use "components/jquery-ui";
+@use "components/icons";
+@use "components/dropdowns";
+@use "components/top";
+@use "components/jstoolbar";
+@use "components/flash";
+@use "components/responsive";
+@use "components/print";
+@use "components/scm";
+
+
+// Tweaks for plugins
+
+@use "components/plugins";
+@use "components/plugins-commercial";

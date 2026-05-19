@@ -1,0 +1,160 @@
+@use "sass:color";
+@use "../variables";
+@use "../mixins/variants";
+
+// Calendar
+
+table.cal {
+  width: 100%;
+  margin-bottom: variables.$line-height-computed;
+  border: 1px solid variables.$table-border-color;
+
+  thead th {
+    width: 14%;
+    padding: variables.$table-condensed-cell-padding;
+    background-color: variables.$table-bg-active;
+
+    &.week-number {
+      width: auto;
+    }
+  }
+
+  tbody tr {
+    height: 100px;
+  }
+
+  td {
+    padding: variables.$table-condensed-cell-padding;
+    border: 1px solid variables.$table-border-color;
+    font-size: variables.$font-size-small;
+    vertical-align: top;
+
+    &.week-number {
+      border: 0 none;
+      background-color: variables.$table-bg-active;
+      font-size: 1em;
+      text-align: right;
+    }
+
+    p.day-num {
+      float: right;
+      font-size: variables.$font-size-large;
+      text-align: right;
+    }
+
+    &.odd p.day-num {
+      color: variables.$gray-600;
+    }
+
+    &.nwday {
+      background: variables.$table-bg-accent;
+    }
+
+    &.today {
+      background: variables.$highlight-bg;
+
+      p.day-num {
+        font-weight: variables.$font-weight-bold;
+      }
+    }
+  }
+}
+
+ul.cal {
+  display: grid;
+  grid-template-columns: 2rem repeat(7, 1fr);
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  border-spacing: 0;
+  border: 1px solid variables.$table-border-color;
+  border-radius: 3px;
+  list-style: none;
+
+  li {
+    &.calhead {
+      padding: 4px;
+      background-color: variables.$table-bg-active;
+      font-weight: bold;
+      text-align: center;
+    }
+
+    &.week-number {
+      padding: 4px;
+      border: none;
+      background-color: variables.$table-bg-active;
+      font-size: 1em;
+      text-align: center;
+
+      span.label-week {
+        display: none;
+      }
+    }
+
+    &.calbody {
+      min-height: calc(1.2em * 6);
+      padding: 2px;
+      border: 1px solid variables.$table-border-color;
+      border-right: 0;
+      border-bottom: 0;
+      font-size: .9em;
+      line-height: 1.25;
+      vertical-align: top;
+
+      p.day-num {
+        font-size: 1.1em;
+        text-align: right;
+
+        .abbr-day {
+          display: none;
+        }
+      }
+
+      .day-letter {
+        display: none;
+      }
+
+      &.odd {
+        p.day-num {
+          color: variables.$gray-600;
+        }
+      }
+
+      &.today {
+        background: variables.$highlight-bg;
+
+        p.day-num {
+          font-weight: variables.$font-weight-bold;
+        }
+      }
+
+      .icon {
+        padding-top: 2px;
+        padding-bottom: 3px;
+      }
+
+      &.nwday:not(.odd) {
+        background-color: variables.$table-bg-accent;
+      }
+
+      div.issue {
+        margin-bottom: variables.$padding-base-vertical;
+        padding: variables.$table-cell-padding;
+        border: 1px solid variables.$table-border-color;
+        border-radius: variables.$border-radius-base;
+        background: color.adjust(variables.$yellow, $lightness: 40%);
+        box-shadow: variables.$panel-shadow;
+      }
+    }
+  }
+}
+
+p.cal.legend {
+  span {
+    display: block;
+  }
+
+  svg + span {
+    display: inline-block;
+  }
+}

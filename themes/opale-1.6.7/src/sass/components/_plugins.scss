@@ -1,0 +1,1090 @@
+@use "sass:color";
+@use "sass:map";
+@use "sass:math";
+@use "../variables";
+@use "../mixins/flash";
+@use "../mixins/variants";
+@use "../vendor/tabler-icons";
+
+// Additionals
+// https://www.redmine.org/plugins/additionals
+
+.dashboards .icon-cube {
+  position: absolute;
+  top: variables.$padding-large-vertical;
+}
+
+@if variables.$sidebar-position == "right" {
+  #sidebar .dashboards .icon-cube {
+      right: 3px;
+  }
+}
+
+.flyout-menu {
+  .dashboards {
+    li {
+      position: relative;
+    }
+
+    .icon-cube {
+      right: 3px;
+    }
+  }
+}
+
+#sidebar {
+  .sidebar-additionals {
+    ul,
+    ol {
+      margin: 0 0 (variables.$line-height-computed * .5);
+      padding-left: 1.5em;
+
+      ul,
+      ol {
+        margin-bottom: 0;
+      }
+    }
+
+    ul {
+      // stylelint-disable selector-max-compound-selectors
+      li {
+        list-style-type: disc;
+
+        li {
+          list-style-type: circle;
+
+          li {
+            list-style-type: square;
+          }
+        }
+      }
+    }
+  }
+
+  .issue-status-change-sidebar {
+    a.icon.icon-flipped-color svg.icon-svg {
+      stroke: none;
+    }
+  }
+}
+
+@if variables.$sidebar-position == "left" {
+  .issue-status-change-sidebar {
+    .status-switch {
+      .icon-svg {
+        transform: rotate(180deg);
+      }
+    }
+  }
+}
+
+.action-login .login-additionals {
+  font-size: 1em;
+
+  @media screen and (min-width: variables.$login-form-box-breakpoint) {
+    max-width: variables.$login-form-width;
+  }
+}
+
+.controller-rdb_taskboard .gototop {
+  margin-right: variables.$padding-side;
+}
+
+@media screen and (max-width: variables.$redmine-responsive-max) {
+  body .dashboard {
+    .splitcontentleft,
+    .splitcontentright {
+      width: 100%;
+    }
+  }
+}
+
+
+// Additional tags
+// https://www.redmine.org/plugins/additional_tags
+
+.issue .tags.attribute {
+  padding-left: 160px;
+
+  .label {
+    width: 160px;
+    margin-left: -160px;
+  }
+
+  #tags-data {
+    padding-top: 3px;
+  }
+}
+
+#main {
+  .additional-tag-label-color {
+    font-weight: 600;
+    text-transform: uppercase;
+  }
+
+  #admin-menu a.additional-tags::before {
+    font-size: 1em;
+  }
+}
+
+#wiki_tags,
+#edit-tags-form {
+  .select2-container {
+    margin-bottom: 5px;
+
+    &.select2-container--default .select2-selection--multiple .select2-selection__rendered {
+      margin: 0;
+      padding: 3px;
+    }
+  }
+}
+
+body .flyout-menu div.sidebar-tags ul.tags-cloud li a {
+  height: auto;
+  padding: 0;
+  border-top: none;
+  font-weight: bold;
+  line-height: 1.5em;
+  text-transform: uppercase;
+}
+
+
+// Redmine Dashboard
+// https://www.redmine.org/plugins/redmine-dashboard
+
+// Fix full screen view
+.controller-rdb_taskboard #main {
+  position: static;
+}
+
+#rdb-taskboard {
+  #rdb-header {
+    a#rdb-refresh {
+      padding: 2px 0;
+      border-width: 0;
+      background-image: none;
+      line-height: 1.2em;
+
+      @include variants.ti-icon-style;
+
+      &::before {
+        @include variants.ti-icon-variant(tabler-icons.$ti-icon-refresh);
+
+        display: block;
+        width: 1em;
+        margin: 0 auto;
+        color: variables.$green;
+        line-height: 1.2em;
+      }
+    }
+
+    .rdb-board .rdb-menu h2 {
+      font-size: 1em;
+    }
+
+    .rdb-board,
+    .rdb-filter,
+    .rdb-option {
+      margin-top: 4px;
+      margin-bottom: 0;
+    }
+  }
+
+  a#rdb-refresh,
+  a#rdb-refresh:focus,
+  a#rdb-refresh:hover,
+  .rdb-menu-link,
+  .rdb-menu-link:focus,
+  .rdb-menu-link:hover,
+  .rdb-menu .rdb-list a,
+  .rdb-menu .rdb-list a:focus,
+  .rdb-menu .rdb-list a:hover {
+    color: variables.$gray-900;
+    text-decoration: none;
+  }
+
+  div:not(.rdb-card-header, .rdb-compact-header, .rdb-card-title) .rdb-menu {
+    .rdb-list {
+      > ul > li > a,
+      .rdb-multicheck a {
+        padding: 3px 5px;
+      }
+
+      .rdb-checkbox-link.rdb-checkbox-link-enabled {
+        background-image: none;
+
+        @include variants.ti-icon-style;
+
+        &::before {
+          @include variants.ti-icon-variant(tabler-icons.$ti-icon-check);
+
+          color: variables.$green;
+        }
+      }
+
+      .rdb-checkbox-link.rdb-checkbox-link-disabled {
+        padding: 0;
+        background-image: none;
+      }
+
+      a {
+        font-size: .9em;
+
+        &#rdb-reset {
+          background-image: none;
+
+          @include variants.ti-icon-style;
+
+          &::before {
+            @include variants.ti-icon-variant(tabler-icons.$ti-icon-x);
+          }
+        }
+      }
+    }
+
+    .rdb-container h3 {
+      padding-top: 5px;
+      padding-bottom: 3px;
+    }
+  }
+
+  .rdb-headers .rdb-column h3 {
+    font-size: 1em;
+  }
+
+  .rdb-evt-group-toggle,
+  .rdb-evt-group-toggle:focus,
+  .rdb-evt-group-toggle:hover {
+    color: variables.$text-color;
+  }
+
+  .rdb-card-header .rdb-menu-issue a.rdb-menu-link,
+  .rdb-compact-header .rdb-menu-issue a.rdb-menu-link,
+  .rdb-card-title > a {
+    background-image: none;
+
+    @include variants.ti-icon-style("after");
+
+    &::after {
+      @include variants.ti-icon-variant(tabler-icons.$ti-icon-settings);
+
+      position: absolute;
+      top: 5px;
+      left: 2px;
+      color: variables.$gray-600;
+    }
+  }
+
+  .rdb-property-tracker {
+    padding-left: 0;
+    background-image: none;
+
+    @include variants.ti-icon-style;
+
+    &::before {
+      @include variants.ti-icon-variant(tabler-icons.$ti-icon-note);
+
+      margin-right: 4px;
+    }
+  }
+
+  .rdb-property-version {
+    padding-left: 0;
+    background-image: none;
+
+    @include variants.ti-icon-style;
+
+    &::before {
+      @include variants.ti-icon-variant(tabler-icons.$ti-icon-package);
+
+      margin-right: 4px;
+    }
+  }
+
+  .rdb-property-assignee {
+    padding-left: 0;
+    background-image: none;
+
+    @include variants.ti-icon-style;
+
+    &::before {
+      @include variants.ti-icon-variant(tabler-icons.$ti-icon-user);
+
+      margin-right: 4px;
+    }
+  }
+
+  .rdb-property-category {
+    padding-left: 0;
+    background-image: none;
+
+    @include variants.ti-icon-style;
+
+    &::before {
+      @include variants.ti-icon-variant(tabler-icons.$ti-icon-category-2);
+
+      margin-right: 4px;
+    }
+  }
+
+  .rdb-property-time {
+    padding-left: 0;
+    background-image: none;
+
+    @include variants.ti-icon-style;
+
+    &::before {
+      @include variants.ti-icon-variant(tabler-icons.$ti-icon-clock);
+
+      margin-right: 4px;
+      font-size: 1.25em;
+    }
+  }
+}
+
+#rdb-footer #rdb-legend .rdb-overdue {
+  padding-right: 3px;
+}
+
+
+// Redmine Banner
+// https://www.redmine.org/plugins/redmine_banner
+
+#admin-menu .icon.redmine-banner {
+  @include variants.ti-icon-style;
+
+  background-image: none;
+
+  &::before {
+    @include variants.ti-icon-variant(tabler-icons.$ti-icon-message-circle-exclamation);
+
+    margin-right: 4px;
+    color: variables.$gray-900;
+    font-size: 1.25em;
+  }
+}
+
+#global_banner {
+  .box {
+    margin-bottom: variables.$line-height-computed;
+  }
+
+  span.use_timer {
+    @include variants.ti-icon-style("after");
+
+    padding: 0;
+    background-image: none;
+
+    &::after {
+      @include variants.ti-icon-variant(tabler-icons.$ti-icon-clock);
+
+      color: variables.$gray-900;
+    }
+  }
+}
+
+#global_banner,
+#banner_setting {
+  .banner_info {
+    @include variants.ti-icon-style;
+
+    padding: 0;
+    background-image: none;
+
+    &::before {
+      @include variants.ti-icon-variant(tabler-icons.$ti-icon-info-circle);
+
+      color: variables.$blue;
+    }
+  }
+
+  .banner_warn {
+    @include variants.ti-icon-style;
+
+    padding: 0;
+    background-image: none;
+
+    &::before {
+      @include variants.ti-icon-variant(tabler-icons.$ti-icon-alert-triangle);
+
+      color: variables.$orange;
+    }
+  }
+
+  .banner_alert {
+    @include variants.ti-icon-style;
+
+    padding: 0;
+    background-image: none;
+
+    &::before {
+      @include variants.ti-icon-variant(tabler-icons.$ti-icon-exclamation-circle);
+
+      color: variables.$red;
+    }
+  }
+}
+
+body div.banner_area {
+  .banner {
+    @include variants.ti-icon-style;
+
+    margin: 0;
+    padding: variables.$padding-large-horizontal variables.$padding-large-horizontal;
+    padding-left: variables.$padding-large-horizontal + 8px + 16px;
+    border: 1px solid variables.$component-border;
+    border-radius: variables.$border-radius-base;
+    background: variables.$component-bg;
+    color: variables.$component-color;
+
+    &::before {
+      margin-left: -(8px + 16px);
+      float: left;
+      line-height: variables.$line-height-computed;
+    }
+
+    &_nodata {
+      @include flash.flash(variables.$flash-warning-text, variables.$flash-warning-bg, variables.$flash-warning-border, variables.$flash-warning-link, "warning");
+    }
+
+    &_normal {
+      padding-left: variables.$padding-large-horizontal;
+    }
+
+    &_info {
+      border-color: variables.$flash-info-border;
+      background-color: variables.$flash-info-bg;
+      color: variables.$flash-info-text;
+
+      &::before {
+        @include variants.ti-icon-variant(tabler-icons.$ti-icon-info-circle);
+      }
+    }
+
+    &_warn {
+      border-color: variables.$flash-warning-border;
+      background-color: variables.$flash-warning-bg;
+      color: variables.$flash-warning-text;
+
+      &::before {
+        @include variants.ti-icon-variant(tabler-icons.$ti-icon-alert-triangle);
+      }
+
+      a,
+      ~ div a {
+        color: variables.$flash-warning-link;
+      }
+    }
+
+    &_alert {
+      border-color: variables.$flash-error-border;
+      background-color: variables.$flash-error-bg;
+      color: variables.$flash-error-text;
+
+      &::before {
+        @include variants.ti-icon-variant(tabler-icons.$ti-icon-exclamation-circle);
+      }
+
+      a,
+      ~ div a {
+        color: variables.$flash-error-link;
+      }
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6,
+    p,
+    ul,
+    ol {
+      margin-bottom: variables.$line-height-computed * .5;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+
+    a {
+      text-decoration: underline;
+    }
+  }
+
+  @media screen and (min-width: variables.$redmine-responsive-min) {
+    &.global_banner .banner {
+      border-radius: 0;
+    }
+  }
+
+  div.banner_edit {
+    right: 5px;
+    bottom: 2px;
+    opacity: .8;
+
+    &:hover {
+      opacity: 1;
+    }
+
+    a {
+      @include variants.ti-icon-style;
+
+      margin-left: 5px;
+
+      &::before {
+        margin-right: 3px;
+      }
+    }
+  }
+
+  div.banner_more_info {
+    bottom: 2px;
+    transform: translateX(50%);
+    opacity: .8;
+    text-transform: uppercase;
+
+    &:hover {
+      opacity: 1;
+    }
+  }
+}
+
+#wrapper + .global_banner .banner {
+  border-radius: 0;
+}
+
+#main #content > .banner_area {
+  margin-bottom: variables.$line-height-computed;
+}
+
+@if variables.$fixed-layout {
+  @media screen and (min-width: variables.$screen-sm-min) {
+    .banner_area {
+      width: variables.$width-sm;
+      margin-right: auto;
+      margin-left: auto;
+    }
+  }
+
+  @media screen and (min-width: variables.$screen-md-min) {
+    .banner_area {
+      width: variables.$width-md;
+    }
+  }
+
+  @media screen and (min-width: variables.$screen-lg-min) {
+    .banner_area {
+      width: variables.$width-lg;
+    }
+  }
+}
+
+
+// Redmine Hearts
+// https://www.redmine.org/plugins/redmine_hearts
+
+.journal > div + .contextual {
+  padding-top: 0;
+  padding-bottom: 0;
+  border: 0;
+
+  > .heart-link-with-count {
+    display: block;
+    position: relative;
+    margin: -(variables.$line-height-computed * .5 + 1px) (variables.$bubble-padding-horizontal - variables.$padding-small-vertical) 0;
+    float: right;
+    border: 0;
+    background-color: variables.$body-bg;
+    text-align: right;
+  }
+}
+
+.contextual {
+  .icon-heart,
+  .icon-heart-off {
+    margin-left: variables.$padding-small-vertical;
+    background-image: none;
+  }
+
+  .heart-link-with-count {
+    margin-right: variables.$padding-small-vertical;
+    margin-left: variables.$padding-small-vertical;
+
+    > .heart-count-number {
+      display: inline-block;
+      min-width: 1em;
+      margin: 0 0 0 3px;
+      padding: 1px 4px;
+      border-radius: variables.$border-radius-base;
+      background-color: variables.$btn-default-bg;
+      color: variables.$btn-default-color;
+      text-align: center;
+
+      &::before {
+        content: "";
+      }
+    }
+  }
+}
+
+#content > .contextual {
+  > span.heart-link-with-count {
+    padding: 0;
+    border: 0;
+    background: transparent;
+
+    > a:first-child {
+      margin-right: 0;
+      margin-left: 4px;
+      padding-right: math.floor(variables.$btn-padding-horizontal-small * .5);
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
+
+      + a {
+        min-width: unset;
+        margin-left: 0;
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+      }
+    }
+  }
+}
+
+.controller-hearts .recent-heart-list li {
+  padding: variables.$padding-large-vertical;
+}
+
+#wiki_form.new_content + .wiki_page--heart,
+#wiki_form.new_content + .heart-link-with-count {
+  display: none;
+}
+
+@media screen and (max-width: variables.$redmine-responsive-max) {
+  body {
+    #content > .contextual > .heart-link-with-count {
+      &:has(svg.icon-svg) {
+        align-items: initial;
+      }
+
+      & > * {
+        margin: 0;
+        font-weight: 400;
+      }
+    }
+  }
+}
+
+
+// Redmine Impersonate
+// https://www.redmine.org/plugins/redmine_impersonate
+
+#content > .contextual > a#impersonate {
+  @include variants.ti-icon-style;
+  @include variants.icon-variant("default", false);
+
+  padding: (variables.$btn-padding-vertical + 1px) variables.$btn-padding-horizontal-small;
+  line-height: 2em;
+
+  &::before {
+    @include variants.ti-icon-variant(tabler-icons.$ti-icon-spy);
+  }
+}
+
+#impersonation-bar {
+  @include variants.ti-icon-style;
+
+  padding: variables.$padding-large-vertical variables.$padding-large-horizontal variables.$padding-large-vertical (variables.$padding-large-horizontal + 8px + 16px) !important;
+  border-width: 1px !important;
+  border-radius: 0;
+
+  &::before {
+    line-height: variables.$line-height-computed;
+  }
+}
+
+@if variables.$fixed-layout {
+  @media screen and (min-width: variables.$screen-sm-min) {
+    #impersonation-bar {
+      width: (variables.$width-sm - 58px) !important;
+      margin-right: auto !important;
+      margin-left: auto !important;
+    }
+  }
+
+  @media screen and (min-width: variables.$screen-md-min) {
+    #impersonation-bar {
+      width: (variables.$width-md - 58px) !important;
+    }
+  }
+
+  @media screen and (min-width: variables.$screen-lg-min) {
+    #impersonation-bar {
+      width: (variables.$width-lg - 58px) !important;
+    }
+  }
+}
+
+
+// Redmine Recaptcha
+// https://www.redmine.org/plugins/recaptcha
+
+.new_user .g-recaptcha {
+  padding-left: (variables.$label-width + variables.$label-space);
+
+  @media screen and (max-width: variables.$redmine-responsive-max) {
+    padding-left: 0;
+  }
+}
+
+
+// Redmine Silencer 3
+// https://www.redmine.org/plugins/redmine_silencer_3
+
+#top-menu {
+  a.redmine-silencer {
+    @include variants.ti-icon-style;
+
+    &::before {
+      @include variants.ti-icon-variant(tabler-icons.$ti-icon-mail-off);
+
+      margin-right: 4px;
+    }
+  }
+}
+
+@media screen and (max-width: variables.$redmine-responsive-max) {
+  body {
+    .js-profile-menu a {
+      &.redmine-silencer {
+        @include variants.ti-icon-style;
+
+        &::before {
+          @include variants.ti-icon-variant(tabler-icons.$ti-icon-mail-off);
+
+          margin-right: 4px;
+        }
+      }
+    }
+  }
+}
+
+
+// Redmine Issues Panel
+// https://github.com/redmica/redmine_issues_panel
+
+.controller-issues_panel {
+  table.list.issues-panel > tbody > tr:nth-child(n):hover {
+    background-color: inherit;
+  }
+
+  .issue-card {
+      @each $priority-id, $priority-color in variables.$priority-color-map {
+        div.priority-#{$priority-id} {
+          box-shadow: 4px 0 0 0 color.adjust(map.get($priority-color, background)) inset;
+        }
+      }
+
+    .card-content {
+      @each $tracker-id, $tracker-colors in variables.$tracker-colors-map {
+        a.tracker-#{$tracker-id} {
+          background-color: map.get($tracker-colors, background);
+          color: map.get($tracker-colors, color);
+
+          &:hover {
+            @if color.channel(map.get($tracker-colors, background), 'hue', $space: hsl) > 15deg and color.channel(map.get($tracker-colors, background), 'hue', $space: hsl) < 40deg {
+              background-color: color.adjust(color.adjust(map.get($tracker-colors, background), $hue: -8deg), $lightness: -8%);
+            } @else {
+              background-color: color.adjust(map.get($tracker-colors, background), $lightness: -10%);
+            }
+
+            color: map.get($tracker-colors, color);
+          }
+        }
+      }
+    }
+  }
+}
+
+
+// Redmine ONLYOFFICE integration plugin
+// https://www.redmine.org/plugins/onlyoffice_redmine
+
+.onlyoffice-editor {
+  height: calc(100vh - 178px);
+}
+
+.onlyoffice-editor + .gototop {
+  display: none;
+}
+
+
+// Redmine Progressive Projects List
+// https://www.redmine.org/plugins/progressive-projects-list
+
+.theme-Opale {
+  ul.projects ul.progressive-project-menu + br {
+    display: block;
+    width: 100%;
+  }
+
+  div#projects-index {
+    ul.projects {
+      div.wiki > :last-child {
+        margin-bottom: 1em;
+      }
+    }
+
+    table.progress {
+      width: 88%;
+    }
+  }
+}
+
+
+// Redmine Knowledgebase
+// https://www.redmine.org/plugins/redmine_knowledgebase
+
+table.list {
+  th {
+    .desc,
+    .asc {
+      @include variants.ti-icon-style("after");
+
+      background-image: none;
+    }
+
+    .desc::after {
+      @include variants.ti-icon-variant(tabler-icons.$ti-icon-sort-descending);
+    }
+
+    .asc::after {
+      @include variants.ti-icon-variant(tabler-icons.$ti-icon-sort-ascending);
+    }
+  }
+}
+
+#query_form_content {
+  #options {
+    margin-left: 0;
+    padding: (variables.$line-height-computed * .5) 0;
+
+    .icon {
+      top: 0;
+      left: 0;
+    }
+  }
+}
+
+.controller-articles,
+.controller-categories {
+  #sidebar-wrapper {
+    #options {
+      .icon {
+        position: initial;
+
+        &.icon-del:hover::before {
+          color: variables.$link-hover-color;
+        }
+      }
+
+      ul.watchers {
+        margin-left: variables.$sidebar-padding-horizontal;
+
+        & > li {
+          margin-bottom: variables.$sidebar-padding-vertical;
+          padding-right: variables.$sidebar-padding-horizontal;
+        }
+
+        .avatar:not(.gravatar) {
+          margin: 0 .5em .5em 0;
+        }
+
+        .user {
+          display: inline;
+          padding: 0;
+          border-width: 0;
+          color: variables.$link-color;
+
+          &:hover {
+            background-color: transparent;
+            color: variables.$link-hover-color;
+            text-decoration: variables.$link-hover-decoration;
+          }
+
+          @media screen and (max-width: variables.$redmine-responsive-max) {
+            color: variables.$flyout-menu-link;
+          }
+        }
+
+        @media screen and (max-width: variables.$redmine-responsive-max) {
+          margin-left: variables.$padding-large-horizontal;
+          padding-top: variables.$padding-small-vertical;
+        }
+      }
+    }
+
+    h3 + .autoscroll {
+      margin-bottom: 0;
+
+      table.list {
+        tr:hover,
+        td {
+          background-color: transparent;
+        }
+
+        tr {
+          td {
+            padding-top: .25em;
+            padding-bottom: .25em;
+
+            @media screen and (max-width: variables.$redmine-responsive-max) {
+              height: auto;
+              padding: variables.$padding-large-vertical variables.$padding-large-horizontal;
+              line-height: variables.$line-height-base;
+            }
+          }
+
+          @media screen and (max-width: variables.$redmine-responsive-max) {
+            border-top: 1px solid #ffffff1a;
+
+            &:first-child {
+              border-top: none;
+            }
+          }
+        }
+      }
+    }
+
+    br {
+      display: none;
+    }
+
+    @media screen and (max-width: variables.$redmine-responsive-max) {
+      #options {
+        margin-left: 0;
+        border-top: 1px solid #ffffff1a;
+
+        li:not(:last-child) a {
+          padding-left: variables.$padding-large-horizontal;
+        }
+      }
+    }
+  }
+
+  #content .contextual .icon-add::before {
+    color: variables.$brand-success;
+  }
+
+  .articles,
+  .category-articles {
+    div.flex-item {
+      box-shadow: variables.$panel-shadow;
+
+      &:last-child {
+        margin-bottom: variables.$padding-base-vertical;
+      }
+    }
+  }
+}
+
+.controller-articles {
+  .other-formats + .wiki h1 {
+    margin-top: .5em;
+    margin-bottom: .5em;
+  }
+
+  .tab-content {
+    .article-info,
+    #comments h4 {
+      color: variables.$gray-750;
+    }
+
+    #comments h4 {
+      padding-bottom: .2em;
+      border-bottom: 1px solid variables.$tab-border;
+    }
+
+    #article {
+      padding-right: 0;
+      padding-left: 0;
+    }
+  }
+
+  .star-rating-control {
+    display: flex;
+
+    .star-rating {
+      float: none;
+    }
+  }
+
+  #sidebar-wrapper {
+    .rating-title {
+      margin-top: variables.$line-height-computed * 1.5;
+    }
+
+    @media screen and (max-width: variables.$redmine-responsive-max) {
+      .rating-title {
+        height: auto;
+        margin: 0;
+        padding: variables.$padding-base-vertical variables.$padding-base-horizontal;
+        border-top: 1px solid variables.$flyout-menu-header-border;
+        border-bottom: 1px solid variables.$flyout-menu-header-border;
+        background-color: variables.$flyout-menu-header-bg;
+        color: variables.$flyout-menu-header-text;
+        font-size: 0.6875rem;
+        font-weight: 500;
+        line-height: variables.$line-height-base;
+        text-transform: uppercase;
+      }
+
+      #article-ratings,
+      #taglist {
+        margin: variables.$padding-small-vertical 0;
+        padding-left: variables.$padding-large-horizontal;
+      }
+
+      .autoscroll + br + #taglist {
+        display: flex;
+        flex-wrap: wrap;
+        padding-left: 0;
+
+        h3,
+        .taglist-divider {
+          flex-basis: 100%;
+        }
+
+        .taglist-divider {
+          margin: variables.$padding-large-vertical 0;
+        }
+
+        .tag {
+          margin: variables.$padding-small-vertical;
+        }
+      }
+    }
+  }
+}
+
+.controller-categories {
+  #sidebar-wrapper {
+    #taglist {
+      display: flex;
+      flex-wrap: wrap;
+
+      h3,
+      .taglist-divider {
+        flex-basis: 100%;
+      }
+
+      .taglist-divider {
+        margin: variables.$padding-large-vertical 0;
+      }
+
+      .tag {
+        margin: variables.$padding-small-vertical;
+      }
+    }
+  }
+}

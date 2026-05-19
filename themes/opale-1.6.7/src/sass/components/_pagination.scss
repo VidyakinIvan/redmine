@@ -1,0 +1,84 @@
+@use "../variables";
+
+// Pagination (multiple pages)
+
+.pagination {
+  .pages {
+    display: inline-block;
+    margin: 0;
+    padding: 0;
+  }
+
+  li {
+    display: inline-block;
+    margin-right: .3em;
+    list-style: none;
+  }
+
+  li > a,
+  li > span,
+  > .previous,
+  > .next,
+  > .page {
+    display: inline-block;
+    padding: variables.$pagination-padding-vertical variables.$pagination-padding-horizontal;
+    border: 1px solid variables.$pagination-border;
+    border-radius: variables.$border-radius-base;
+    background-color: variables.$pagination-bg;
+    color: variables.$pagination-color;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+
+  li > span {
+    border-color: variables.$pagination-inactive-border;
+    background-color: variables.$pagination-inactive-bg;
+    color: variables.$pagination-inactive-color;
+    cursor: default;
+  }
+
+  .spacer > span {
+    padding: 0;
+    border: 0 none;
+    background: transparent;
+    color: variables.$text-color;
+  }
+
+  a {
+    &:hover,
+    &:focus {
+      border-color: variables.$pagination-hover-border;
+      background-color: variables.$pagination-hover-bg;
+      color: variables.$pagination-hover-color;
+    }
+  }
+
+  .page.current,
+  .current > span {
+    z-index: 2;
+    border-color: variables.$pagination-active-border;
+    background-color: variables.$pagination-active-bg;
+    color: variables.$pagination-active-color;
+    cursor: default;
+  }
+
+  .items,
+  .per-page {
+    display: inline-block;
+    margin: (variables.$pagination-padding-vertical + 1px) 0 (variables.$pagination-padding-vertical + 1px) variables.$pagination-padding-vertical;
+  }
+}
+
+p.pagination {
+  margin-bottom: 0;
+  float: left;
+
+  + h1,
+  + h2,
+  + h3,
+  + h4,
+  + h5,
+  + h6 {
+    clear: both;
+  }
+}

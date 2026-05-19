@@ -1,0 +1,258 @@
+@use "sass:math";
+@use "../variables";
+@use "../mixins/variants";
+
+// Buttons
+
+input[type="button"],
+input[type="submit"],
+input[type="reset"],
+button {
+  @include variants.button-size(variables.$btn-padding-vertical, variables.$btn-padding-horizontal, variables.$font-size-base, variables.$line-height-base, variables.$border-radius-base);
+
+  display: inline-block;
+  margin-bottom: 0;
+  transition:
+    border-color variables.$transition-time ease-in-out,
+    background-color variables.$transition-time ease-in-out,
+    box-shadow variables.$transition-time ease-in-out;
+  border: 1px solid;
+  font-weight: variables.$btn-font-weight;
+  text-align: center;
+  vertical-align: top;
+  white-space: nowrap;
+  cursor: pointer;
+  user-select: none;
+
+  @include variants.button-variant(variables.$btn-primary-color, variables.$btn-primary-bg, variables.$btn-primary-border);
+
+  &:hover,
+  &:focus {
+    text-decoration: none;
+  }
+
+  &.disabled,
+  &[disabled],
+  fieldset[disabled] & {
+    opacity: .65;
+    box-shadow: none;
+    pointer-events: none;
+  }
+}
+
+
+// Form variants layout
+
+form {
+  input,
+  button,
+  select {
+    ~ a {
+      margin-left: math.ceil(variables.$btn-padding-horizontal-small * .5);
+      line-height: variables.$input-height-base;
+    }
+  }
+
+  input[type="submit"] {
+    margin-right: 2px;
+
+    + input {
+      @include variants.button-variant(variables.$btn-success-color, variables.$btn-success-bg, variables.$btn-success-border);
+    }
+
+    ~ a {
+      margin-right: 2px;
+
+      + a {
+        margin-left: 2px;
+      }
+    }
+  }
+}
+
+
+// Repository's 'View differences' button
+
+form[action*="repository/diff"] {
+  margin-bottom: variables.$line-height-computed * .5;
+}
+
+
+// Forum and news message form buttons layout
+
+#message-form,
+#news-form {
+  #message_sticky,
+  #message_locked {
+    position: relative;
+    top: 1px;
+    margin-left: 5px;
+  }
+}
+
+
+// Button links
+
+p.buttons,
+.other-formats > span,
+#wiki_add_attachment > p,
+#content > .contextual,
+#content > .contextual > span:not(.drdn),
+#content > div[data-controller="quote-reply"] > .contextual,
+#query_form > .contextual,
+#query_form_with_buttons > .contextual {
+  > a,
+  > span:not(.drdn) {
+    margin-right: 1px;
+    margin-left: 1px;
+    padding: variables.$btn-padding-vertical variables.$btn-padding-horizontal-small;
+    transition:
+      border-color variables.$transition-time ease-in-out,
+      background-color variables.$transition-time ease-in-out,
+      color variables.$transition-time ease-in-out;
+    border: 1px solid;
+    border-radius: variables.$border-radius-base;
+    font-size: variables.$font-size-base;
+    vertical-align: top;
+  }
+
+  > a {
+    border-color: variables.$pagination-border;
+    background-color: variables.$pagination-bg;
+    color: variables.$pagination-color;
+
+    &:first-child {
+      margin-left: 0;
+    }
+
+    &:last-child {
+      margin-right: 0;
+    }
+
+    &:hover,
+    &:focus {
+      border-color: variables.$pagination-hover-border;
+      background-color: variables.$pagination-hover-bg;
+      color: variables.$pagination-hover-color;
+      text-decoration: none;
+    }
+  }
+
+  > span:not(.drdn) {
+    border-color: variables.$pagination-inactive-border;
+    background-color: variables.$pagination-inactive-bg;
+    color: variables.$pagination-inactive-color;
+  }
+}
+
+
+// Submit + cancel
+
+#issue-form,
+.mypage-box,
+.journal,
+.edit_news,
+.edit_content,
+.edit_time_entry,
+.edit_membership {
+  input[type="submit"] + a {
+    margin-left: math.ceil(variables.$btn-padding-horizontal-small * .5);
+  }
+}
+
+
+// Action buttons group
+
+p.buttons {
+  margin-bottom: variables.$line-height-computed;
+
+  a {
+    line-height: variables.$line-height-base;
+  }
+}
+
+
+// Export actions
+
+.other-formats {
+  margin: variables.$line-height-computed 0 0;
+  text-align: right;
+
+  > span {
+    margin-right: 1px;
+    margin-left: 1px;
+
+    &:last-child {
+      margin-right: 0;
+    }
+  }
+
+  @media screen and (min-width: variables.$redmine-responsive-min) {
+    .pagination + &,
+    #wiki_add_attachment + & {
+      margin-top: 0;
+      float: right;
+    }
+  }
+}
+
+
+// Query builder buttons
+
+.query-columns {
+  select {
+    width: auto !important; // stylelint-disable-line declaration-no-important
+    min-width: 130px;
+  }
+
+  label + & {
+    margin-left: variables.$padding-side;
+  }
+
+  @at-root span#{&} {
+    > span {
+      display: inline-block;
+      height: 100%;
+      vertical-align: middle;
+    }
+
+    label {
+      display: block;
+      margin-bottom: variables.$line-height-computed * .5;
+      line-height: initial;
+    }
+  }
+}
+
+#list-definition,
+.query-columns {
+  .buttons {
+    vertical-align: middle;
+
+    br {
+      display: none;
+    }
+
+    button,
+    input[type="button"] {
+      display: block;
+      width: 32px;
+      margin-bottom: 4px;
+      padding-right: 1px;
+      padding-left: 1px;
+
+      @include variants.button-variant(variables.$btn-default-color, variables.$btn-default-bg, variables.$btn-default-border);
+    }
+  }
+}
+
+
+// Button for toggling multiselect (in filters)
+
+a[data-expands],
+.toggle-multiselect {
+  padding: (variables.$input-padding-vertical + 2px) 0;
+  vertical-align: middle;
+  cursor: pointer;
+  user-select: none;
+}

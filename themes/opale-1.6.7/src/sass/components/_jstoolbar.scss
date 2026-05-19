@@ -1,0 +1,213 @@
+@use "sass:color";
+@use "../variables";
+@use "../vendor/bootstrap/mixins/clearfix";
+
+// WYSIWYG icons
+
+#content {
+  div.jstTabs.tabs {
+    height: auto;
+
+    @if variables.$flexbox-layout {
+      @media screen and (max-width: variables.$redmine-responsive-max) {
+        clear: both;
+      }
+    }
+
+    > ul {
+      width: 100%;
+      height: auto;
+
+      > li {
+        height: auto;
+        margin: 0;
+
+        > a {
+          &:hover,
+          &:focus {
+            border-color: color.adjust(variables.$tab-hover-border, $lightness: -3%) color.adjust(variables.$tab-hover-border, $lightness: -3%) variables.$tab-border;
+            background-color: color.adjust(variables.$tab-hover-bg, $lightness: -3%);
+          }
+
+          &.selected {
+            border-color: variables.$tab-active-border variables.$tab-active-border variables.$tab-active-bg;
+            background: variables.$tab-active-bg;
+            color: variables.$tab-active-text;
+
+            &.tab-preview {
+              border-bottom-color: variables.$wiki-preview-bg;
+              background-color: variables.$wiki-preview-bg;
+            }
+          }
+        }
+
+        @if variables.$flexbox-layout {
+          align-self: flex-end;
+        }
+
+        &::before {
+          content: none;
+        }
+
+        &.tab-elements {
+          flex: 1;
+          margin-left: 5px;
+        }
+      }
+    }
+
+    .jstElements {
+      height: auto;
+    }
+  }
+
+  .jstEditor {
+    .wiki-preview {
+      padding: variables.$panel-body-padding;
+      border: 1px solid variables.$input-border;
+      border-radius: variables.$input-border-radius;
+      background-color: variables.$wiki-preview-bg;
+
+      p {
+        padding: 0;
+      }
+    }
+  }
+}
+
+div.jstElements {
+  @include clearfix.clearfix;
+
+  line-height: normal;
+
+  .box & {
+    display: block;
+    padding: 0;
+
+    .jstSpacer {
+      margin-right: 4px;
+    }
+
+    @media (min-width: variables.$screen-md) {
+      .jstb_help {
+        margin-right: 0;
+        margin-left: -6px;
+        float: right;
+      }
+    }
+  }
+
+  button {
+    margin-right: 2px;
+    margin-bottom: 4px;
+    padding: 0;
+    border: 0;
+    opacity: 1;
+    background-color: transparent;
+    box-shadow: none;
+    color: variables.$gray-800;
+    vertical-align: top;
+
+    &::before {
+      text-align: center;
+    }
+
+    &:hover,
+    &:focus {
+      background-color: color.adjust(variables.$tab-hover-bg, $lightness: -3%);
+      color: variables.$gray-900;
+    }
+  }
+
+  .jstb_strong {
+      background-image: url("/jstoolbar/bold.svg");
+  }
+
+  .jstb_em {
+      background-image: url("/jstoolbar/italic.svg");
+  }
+
+  .jstb_ins {
+      background-image: url("/jstoolbar/underline.svg");
+  }
+
+  .jstb_del {
+      background-image: url("/jstoolbar/strikethrough.svg");
+  }
+
+  .jstb_code {
+      background-image: url("/jstoolbar/letter-c.svg");
+  }
+
+  .jstb_h1 {
+      background-image: url("/jstoolbar/h1.svg");
+  }
+
+  .jstb_h2 {
+      background-image: url("/jstoolbar/h2.svg");
+  }
+
+  .jstb_h3 {
+      background-image: url("/jstoolbar/h3.svg");
+  }
+
+  .jstb_ul {
+      background-image: url("/jstoolbar/list.svg");
+  }
+
+  .jstb_ol {
+      background-image: url("/jstoolbar/list-numbers.svg");
+  }
+
+  .jstb_tl {
+      background-image: url("/jstoolbar/list-check.svg");
+  }
+
+  .jstb_bq {
+      background-image: url("/jstoolbar/indent-increase.svg");
+  }
+
+  .jstb_unbq {
+      background-image: url("/jstoolbar/indent-decrease.svg");
+  }
+
+  .jstb_pre::before {
+      content: "pre";
+      color: #333;
+      font-size: 10px;
+      font-weight: 700
+  }
+
+  .jstb_precode {
+      background-image: url("/jstoolbar/code.svg");
+  }
+
+  .jstb_link {
+      background-image: url("/jstoolbar/wiki_link.svg");
+  }
+
+  .jstb_img {
+      background-image: url("/jstoolbar/image.svg");
+  }
+
+  .jstb_table {
+      background-image: url("/jstoolbar/table.svg");
+  }
+
+  .jstb_help {
+      background-image: url("/jstoolbar/help.svg");
+  }
+}
+
+body {
+  .table-generator {
+    td {
+      border-color: variables.$tab-border;
+    }
+
+    td.selected-cell,
+    td:hover {
+      background-color: variables.$brand-primary;
+    }
+  }
+}

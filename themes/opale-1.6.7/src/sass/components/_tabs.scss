@@ -1,0 +1,212 @@
+@use "../variables";
+@use "../mixins/forms";
+@use "../mixins/variants";
+@use "../vendor/tabler-icons";
+
+// Tabs
+
+$tabs-height: variables.$line-height-computed + variables.$tab-padding-vertical * 2 + 1px + 1px;
+
+.tabs {
+  $tabs-buttons-width: 40px;
+
+  position: relative;
+  overflow: hidden;
+
+  @if not variables.$flexbox-layout {
+    padding-right: $tabs-buttons-width;
+  }
+
+  > ul {
+    box-sizing: border-box;
+    margin: 0;
+    padding-left: 0;
+    list-style: none;
+
+    @if variables.$flexbox-layout {
+      display: flex;
+      flex-wrap: nowrap;
+      height: $tabs-height;
+    } @else {
+      width: 2000px;
+
+      @include clearfix.clearfix;
+    }
+
+    > li {
+      @if variables.$flexbox-layout {
+        flex: 0 1 auto;
+      } @else {
+        float: left;
+      }
+
+      > a {
+        display: block;
+        box-sizing: border-box;
+        min-width: 3em;
+        height: $tabs-height;
+        margin-right: 2px;
+        padding: variables.$tab-padding-vertical variables.$tab-padding-horizontal;
+        border: 1px solid transparent;
+        border-radius: variables.$border-radius-base variables.$border-radius-base 0 0;
+        text-align: center;
+        white-space: nowrap;
+      }
+    }
+  }
+
+  .tabs-buttons {
+    position: absolute;
+    z-index: 2;
+    top: 0;
+    right: 0;
+    width: $tabs-buttons-width;
+    border-bottom: 1px solid variables.$tab-border;
+    background-color: variables.$body-bg;
+
+    > button {
+      width: 50%;
+      height: $tabs-height - 1px;
+      margin: 0;
+      padding: 0;
+      float: left;
+      transition: opacity variables.$transition-time;
+      border: 0 none;
+      border-radius: 0;
+      opacity: variables.$icon-opacity;
+      background-color: variables.$body-bg;
+      background-repeat: no-repeat;
+      background-position: center center;
+      box-shadow: none;
+      color: variables.$legend-color;
+
+      &:hover,
+      &:active {
+        opacity: variables.$icon-hover-opacity;
+        color: variables.$pagination-color;
+      }
+
+      &:active {
+        background-color: variables.$tab-hover-bg;
+      }
+
+      &.disabled {
+        opacity: variables.$icon-opacity * .5;
+        color: variables.$pagination-inactive-color;
+      }
+    }
+
+    .tab-left {
+      @include variants.ti-icon-style;
+
+      &::before {
+        @include variants.ti-icon-variant(tabler-icons.$ti-icon-chevron-left);
+      }
+    }
+
+    .tab-right {
+      @include variants.ti-icon-style;
+
+      &::before {
+        @include variants.ti-icon-variant(tabler-icons.$ti-icon-chevron-right);
+      }
+    }
+  }
+}
+
+div.tabs:not(#main-menu) {
+  height: $tabs-height;
+  margin-bottom: variables.$line-height-computed;
+
+  > ul {
+    margin: 0;
+    padding: 0;
+    border-bottom: 1px solid variables.$tab-border;
+
+    > li {
+      margin: 0 0 -1px;
+      background: transparent;
+
+      > a {
+        padding: variables.$tab-padding-vertical variables.$tab-padding-horizontal;
+        border-color: transparent;
+        background: transparent;
+        color: variables.$link-color;
+        font: inherit;
+
+        &:hover,
+        &:focus {
+          border-color: variables.$tab-hover-border variables.$tab-hover-border variables.$tab-border;
+          background-color: variables.$tab-hover-bg;
+          color: variables.$tab-hover-text;
+          text-decoration: none;
+        }
+
+        &.selected {
+          border-color: variables.$tab-active-border variables.$tab-active-border variables.$tab-active-bg;
+          background: variables.$tab-active-bg;
+          color: variables.$tab-active-text;
+        }
+      }
+    }
+  }
+}
+
+// Specific tabs content layout
+
+#tab-content-modules fieldset p {
+  margin: 3px 0 4px;
+}
+
+#tab-content-members,
+#tab-content-memberships,
+#tab-content-users {
+  .splitcontentleft {
+    width: 65%;
+  }
+
+  .splitcontentright {
+    width: 35%;
+  }
+
+  fieldset {
+    margin-bottom: variables.$line-height-computed;
+
+    legend {
+      font-weight: variables.$font-weight-bold;
+    }
+
+    label {
+      @include forms.check;
+
+      display: block;
+      margin-bottom: 3px;
+    }
+
+    label[for="principal_search"] {
+      padding-left: 0;
+    }
+  }
+
+  .pagination .items {
+    margin-left: 0;
+  }
+}
+
+#tab-content-members,
+#tab-content-users {
+  #principals {
+    max-height: 400px;
+    overflow: auto;
+  }
+}
+
+#tab-content-memberships .splitcontentright select {
+  width: 100%;
+}
+
+#principals_for_new_member {
+  .pagination {
+    float: none;
+  }
+}
