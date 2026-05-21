@@ -19,7 +19,7 @@ class RdbAssigneeFilter < RdbFilter
   end
 
   def default_values
-    [RdbDashboard.defaults[:assignee] || :me]
+    [RdbDashboard.defaults[:assignee] || :all]
   end
 
   def update(params)
