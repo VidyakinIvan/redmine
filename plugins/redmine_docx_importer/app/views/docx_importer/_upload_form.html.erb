@@ -2,8 +2,8 @@
   <h3>Импорт спецификации из DOCX</h3>
   <p>Загрузите Word-документ с ГОСТ-заголовками (стили «Заголовок 1/2/3»).</p>
   
-  <%= form_tag({controller: 'docx_importer', action: 'upload'},
-               {method: :post, multipart: true, project_id: @project}) do %>
+  <% form_url = url_for(controller: 'docx_import', action: 'upload', project_id: @project) %>
+  <%= form_tag(form_url, method: :post, multipart: true) do %>
     <p>
       <label for="file">Файл .docx:</label>
       <%= file_field_tag 'file', accept: '.docx' %>

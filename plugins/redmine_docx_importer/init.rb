@@ -7,4 +7,4 @@ end
 
 plugin_dir = File.dirname(__FILE__)
 require File.join(plugin_dir, 'lib', 'docx_importer', 'hooks')
-require File.join(plugin_dir, 'lib', 'docx_importer', 'controller')
+require File.join(plugin_dir, 'lib', 'docx_importer', 'docx_import_controller')
