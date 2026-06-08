@@ -14,43 +14,47 @@ class DocxParser
 
   private
 
-  def extract_sections
-    sections = []
-    current = nil
-    counters = Hash.new(0)
+def extract_sections
+  sections = []
+  current = nil
+  counters = Hash.new(0)
 
-    @doc.paragraphs.each do |para|
-      style = para.style || ''
-      
-      if style.match?(/Heading|heading|Заголовок|heading\s*\d|заголовок\s*\d/i)
-        if current
-          sections << current
-        end
-
-        level = style.match(/Heading\s*(\d)/i) || style.match(/[Зз]аголовок\s*(\d)/)
-        level = level ? level[1].to_i : 1
-
-        counters[level] += 1
-        (level + 1..10).each { |i| counters[i] = 0 }
-
-        parts = (1..level).map { |i| counters[i] }
-        number = parts.join('.')
-
-        current = {
-          number: number,
-          title: para.text.strip,
-          text: '',
-          level: level
-        }
-      elsif current
-        text = para.text.strip
-        current[:text] += "#{text}\n" unless text.empty?
-      end
+  @doc.paragraphs.each do |para|
+    style = begin
+      para.style
+    rescue
+      ''
     end
+    
+    if style && style.match?(/Heading|heading|Заголовок|heading\s*\d|заголовок\s*\d/i)
+      if current
+        sections << current
+      end
 
-    sections << current if current
-    sections
+      level = style.match(/Heading\s*(\d)/i) || style.match(/[Зз]аголовок\s*(\d)/)
+      level = level ? level[1].to_i : 1
+
+      counters[level] += 1
+      (level + 1..10).each { |i| counters[i] = 0 }
+
+      parts = (1..level).map { |i| counters[i] }
+      number = parts.join('.')
+
+      current = {
+        number: number,
+        title: para.text.strip,
+        text: '',
+        level: level
+      }
+    elsif current
+      text = para.text.strip
+      current[:text] += "#{text}\n" unless text.empty?
+    end
   end
+
+  sections << current if current
+  sections
+end
 
   def filter_leaves(sections)
     parent_numbers = Set.new
