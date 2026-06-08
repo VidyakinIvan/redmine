@@ -17,7 +17,7 @@ class DocxParser
 def extract_sections
   sections = []
   current = nil
-  counters = Hash.new(0)
+  counters = [0, 0, 0]
 
   @doc.paragraphs.each do |para|
     style = begin
@@ -27,12 +27,14 @@ def extract_sections
     end
     
     if style && style.match?(/Heading|heading|Заголовок|heading\s*\d|заголовок\s*\d/i)
-      if current
-        sections << current
-      end
-
       level = style.match(/Heading\s*(\d)/i) || style.match(/[Зз]аголовок\s*(\d)/)
       level = level ? level[1].to_i : 1
+	  
+	  next if level > 3
+	  
+	  if current
+        sections << current
+      end
 
       counters[level] += 1
       (level + 1..10).each { |i| counters[i] = 0 }
