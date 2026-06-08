@@ -10,5 +10,3 @@ Rails.autoloaders.main.ignore("#{__dir__}/app")
 
 require_relative 'lib/docx_importer/hooks'
 require_relative 'lib/docx_importer/docx_import_controller'
-
-Redmine::Plugin.find(:redmine_docx_importer).routes :redmine_docx_importer
