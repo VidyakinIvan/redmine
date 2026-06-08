@@ -1,0 +1,15 @@
+<div class="box" style="margin-top: 20px;">
+  <h3>Импорт спецификации из DOCX</h3>
+  <p>Загрузите Word-документ с ГОСТ-заголовками (стили «Заголовок 1/2/3»).</p>
+  
+  <%= form_tag({controller: 'docx_importer', action: 'upload'},
+               {method: :post, multipart: true, project_id: @project}) do %>
+    <p>
+      <label for="file">Файл .docx:</label>
+      <%= file_field_tag 'file', accept: '.docx' %>
+    </p>
+    <p>
+      <%= submit_tag 'Загрузить и создать задачи', class: 'button-positive' %>
+    </p>
+  <% end %>
+</div>
