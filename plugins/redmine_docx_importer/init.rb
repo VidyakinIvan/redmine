@@ -1,4 +1,4 @@
-Redmine::Plugin.register :docx_importer do
+Redmine::Plugin.register :redmine_docx_importer do
   name 'DOCX Importer Plugin'
   author 'Ivan Vidyakin'
   description 'Import specification from Word into Redmine issues'
