@@ -1,5 +1,5 @@
 require 'csv'
-require File.join(Rails.root, 'plugins', 'docx_importer', 'lib', 'docx_importer', 'parser')
+require File.join(Rails.root, 'plugins', 'redmine_docx_importer', 'lib', 'docx_importer', 'parser')
 
 class DocxImporterController < ApplicationController
   before_action :find_project, :authorize
