@@ -1,10 +1,14 @@
 Redmine::Plugin.register :redmine_docx_importer do
   name 'DOCX Importer Plugin'
-  author 'Ivan Vidyakin'
+  author 'Your Company'
   description 'Import specification from Word into Redmine issues'
-  version '0.0.2'
+  version '0.0.3'
 end
 
-plugin_dir = File.dirname(__FILE__)
-require File.join(plugin_dir, 'lib', 'docx_importer', 'hooks')
-require File.join(plugin_dir, 'lib', 'docx_importer', 'docx_import_controller')
+# Отключаем Zeitwerk для этого плагина
+Rails.autoloaders.main.ignore("#{__dir__}/lib")
+Rails.autoloaders.main.ignore("#{__dir__}/app")
+
+# Подключаем файлы вручную
+require_relative 'lib/docx_importer/hooks'
+require_relative 'lib/docx_importer/docx_import_controller'
