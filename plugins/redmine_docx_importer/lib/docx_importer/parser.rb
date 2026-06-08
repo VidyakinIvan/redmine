@@ -72,7 +72,7 @@ end
     number_to_title = sections.each_with_object({}) { |s, h| h[s[:number]] = s[:title] }
 
     CSV.generate(col_sep: ';') do |csv|
-      csv << ['Номер раздела', 'Тема задачи', 'Описание', 'Уровень', 'Родительский раздел', 'Тема родителя']
+      csv << ['Тема', 'Описание', 'Статус', 'Трекер', 'Приоритет']
 
       sections.each do |sec|
         parts = sec[:number].split('.')
@@ -80,12 +80,11 @@ end
         parent_title = number_to_title[parent_number] || ''
 
         csv << [
-          sec[:number],
-          sec[:title],
-          sec[:text].strip,
-          sec[:level],
-          parent_number,
-          parent_title
+		  "#{sec[:number]} #{sec[:title]}",
+          sec[:text],
+          "Бэклог",
+          "Входящий поток",
+          "Важная"
         ]
       end
     end
