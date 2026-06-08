@@ -1,6 +1,5 @@
 require 'docx'
 require 'csv'
-require 'nokogiri'
 
 class DocxParser
   def initialize(file_path)
@@ -17,73 +16,44 @@ class DocxParser
 
   def extract_sections
     sections = []
-    current_number = ""
-    current_title = ""
-    current_text_lines = []
-    current_level = 0
-    counters = [0, 0, 0]
+    current = nil
+    counters = Hash.new(0)
 
     @doc.paragraphs.each do |para|
-      level = get_heading_level(para)
-
-      if level > 0
-        if !current_number.empty?
-          sections << {
-            number: current_number,
-            title: current_title,
-            text: current_text_lines.join("\n").strip,
-            level: current_level
-          }
+      style = begin
+        para.style || ''
+      rescue
+        ''
+      end
+      
+      if style.match?(/Heading|heading|Заголовок|heading\s*\d|заголовок\s*\d/i)
+        if current
+          sections << current
         end
 
-        current_title = para.text.strip
-        current_level = level
+        level = style.match(/Heading\s*(\d)/i) || style.match(/[Зз]аголовок\s*(\d)/)
+        level = level ? level[1].to_i : 1
 
-        counters[level - 1] += 1
-        (level...3).each { |i| counters[i] = 0 }
+        counters[level] += 1
+        (level + 1..10).each { |i| counters[i] = 0 }
 
-        number_parts = []
-        (0...level).each do |i|
-          number_parts << (counters[i] > 0 ? counters[i].to_s : "1")
-        end
-        current_number = number_parts.join(".")
+        parts = (1..level).map { |i| counters[i] }
+        number = parts.join('.')
 
-        current_text_lines = []
-      else
-        if !current_number.empty? && !para.text.strip.empty?
-          current_text_lines << para.text.strip
-        end
+        current = {
+          number: number,
+          title: para.text.strip,
+          text: '',
+          level: level
+        }
+      elsif current
+        text = para.text.strip
+        current[:text] += "#{text}\n" unless text.empty?
       end
     end
 
-    if !current_number.empty?
-      sections << {
-        number: current_number,
-        title: current_title,
-        text: current_text_lines.join("\n").strip,
-        level: current_level
-      }
-    end
-
+    sections << current if current
     sections
-  end
-
-  def get_heading_level(paragraph)
-    style_name = begin
-      paragraph.style || ""
-    rescue
-      ""
-    end
-    
-    if style_name == "Heading 1"
-      1
-    elsif style_name == "Heading 2"
-      2
-    elsif style_name == "Heading 3"
-      3
-    else
-      0
-    end
   end
 
   def filter_leaves(sections)
@@ -111,7 +81,7 @@ class DocxParser
         if first_num >= 3
           csv << [
             "#{sec[:number]} #{sec[:title]}",
-            sec[:text],
+            sec[:text].strip,
             "Бэклог",
             "Входящий поток",
             "Важная"
