@@ -75,9 +75,8 @@ end
       csv << ['Тема', 'Описание', 'Статус', 'Трекер', 'Приоритет']
 
       sections.each do |sec|
-        parts = sec[:number].split('.')
-        parent_number = parts.length > 1 ? parts[0..-2].join('.') : ''
-        parent_title = number_to_title[parent_number] || ''
+		first_num = sec[:number].split('.').first.to_i
+		next unless first_num >= 3
 
         csv << [
 		  "#{sec[:number]} #{sec[:title]}",
