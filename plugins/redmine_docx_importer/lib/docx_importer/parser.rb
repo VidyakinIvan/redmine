@@ -20,7 +20,7 @@ class DocxParser
     counters = Hash.new(0)
 
     @doc.paragraphs.each do |para|
-      style = para.paragraph_style || ''
+      style = para.style || ''
       
       if style.match?(/Heading|heading|Заголовок|heading\s*\d|заголовок\s*\d/i)
         if current
