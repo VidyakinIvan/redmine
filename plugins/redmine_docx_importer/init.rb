@@ -5,5 +5,6 @@ Redmine::Plugin.register :redmine_docx_importer do
   version '0.0.2'
 end
 
-require_dependency 'docx_importer/hooks'
-require_dependency 'docx_importer/controller'
+plugin_dir = File.dirname(__FILE__)
+require File.join(plugin_dir, 'lib', 'docx_importer', 'hooks')
+require File.join(plugin_dir, 'lib', 'docx_importer', 'controller')
