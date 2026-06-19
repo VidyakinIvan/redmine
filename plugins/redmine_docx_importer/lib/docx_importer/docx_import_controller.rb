@@ -79,32 +79,26 @@ class DocxImportController < ApplicationController
     count = 0
     groups = {}
 
-    # Разбираем CSV на группы
     CSV.parse(csv_string, headers: true, col_sep: ';') do |row|
       subject = row['Тема']
       next if subject.blank?
 
-      # Извлекаем номер из темы (например, "6.4 Товарная этикетка")
-      number = subject.split('.').first(2).join('.')  # Для 6.4.1 -> "6.4"
+      number = subject.split('.').first(2).join('.')
 
       if subject.count('.') == 1
-        # Уровень 2 — родительская задача
         groups[number] ||= { parent: row, children: [] }
         groups[number][:parent] = row
       elsif subject.count('.') == 2
-        # Уровень 3 — дочерний пункт чек-листа
-        parent_key = number  # "6.4"
+        parent_key = number
         groups[parent_key] ||= { parent: nil, children: [] }
         groups[parent_key][:children] << row
       end
     end
 
-    # Создаём задачи с чек-листами
     groups.each do |parent_key, data|
       parent_row = data[:parent]
       children = data[:children]
       
-      # Пропускаем, если нет родительской задачи (уровень 2)
       next unless parent_row
 
       subject = parent_row['Тема']
@@ -129,7 +123,6 @@ class DocxImportController < ApplicationController
       )
 
       if issue.save
-        # Добавляем чек-лист
         children.each do |child_row|
           child_subject = child_row['Тема']
           checklist_item = ChecklistItem.new(
