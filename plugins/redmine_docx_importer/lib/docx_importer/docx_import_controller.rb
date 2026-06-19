@@ -75,70 +75,77 @@ class DocxImportController < ApplicationController
     count
   end
   
-  def import_as_checklists(csv_string)
-    count = 0
-    groups = {}
+def import_as_checklists(csv_string)
+  count = 0
+  groups = {}
 
-    CSV.parse(csv_string, headers: true, col_sep: ';') do |row|
-      subject = row['Тема']
-      next if subject.blank?
+  CSV.parse(csv_string, headers: true, col_sep: ';') do |row|
+    subject = row['Тема']
+    next if subject.blank?
 
-      number = subject.split('.').first(2).join('.')
+    # Извлекаем номер раздела из начала строки (например, "6.4.1 Описание" -> "6.4.1")
+    number_match = subject.match(/^(\d+(?:\.\d+)*)/)
+    next unless number_match
+    
+    number = number_match[1]
+    dots = number.count('.')
 
-      if subject.count('.') == 1
-        groups[number] ||= { parent: row, children: [] }
-        groups[number][:parent] = row
-      elsif subject.count('.') == 2
-        parent_key = number
-        groups[parent_key] ||= { parent: nil, children: [] }
-        groups[parent_key][:children] << row
-      end
+    if dots == 1
+      # Уровень 2 — родительская задача
+      groups[number] ||= { parent: row, children: [] }
+      groups[number][:parent] = row
+    elsif dots == 2
+      # Уровень 3 — дочерний пункт
+      parent_key = number.split('.')[0..1].join('.')  # "6.4.1" -> "6.4"
+      groups[parent_key] ||= { parent: nil, children: [] }
+      groups[parent_key][:children] << row
     end
-
-    groups.each do |parent_key, data|
-      parent_row = data[:parent]
-      children = data[:children]
-      
-      next unless parent_row
-
-      subject = parent_row['Тема']
-      description = parent_row['Описание'] || ''
-      
-      status_name = parent_row['Статус'] || 'Бэклог'
-      tracker_name = parent_row['Трекер'] || 'Входящий поток'
-      priority_name = parent_row['Приоритет'] || 'Важная'
-
-      status = IssueStatus.find_by(name: status_name) || IssueStatus.default
-      tracker = Tracker.find_by(name: tracker_name) || @project.trackers.first
-      priority = IssuePriority.find_by(name: priority_name) || IssuePriority.default
-
-      issue = Issue.new(
-        project: @project,
-        tracker: tracker,
-        author: User.current,
-        status: status,
-        priority: priority,
-        subject: subject,
-        description: description
-      )
-
-      if issue.save
-        children.each do |child_row|
-          child_subject = child_row['Тема']
-          checklist_item = ChecklistItem.new(
-            issue: issue,
-            subject: child_subject,
-            is_done: false
-          )
-          checklist_item.save
-        end
-
-        count += 1
-      end
-    end
-
-    count
   end
+
+  # Создаём задачи
+  groups.each do |parent_key, data|
+    parent_row = data[:parent]
+    children = data[:children]
+    
+    next unless parent_row
+
+    subject = parent_row['Тема']
+    description = parent_row['Описание'] || ''
+    
+    status_name = parent_row['Статус'] || 'Бэклог'
+    tracker_name = parent_row['Трекер'] || 'Входящий поток'
+    priority_name = parent_row['Приоритет'] || 'Важная'
+
+    status = IssueStatus.find_by(name: status_name) || IssueStatus.default
+    tracker = Tracker.find_by(name: tracker_name) || @project.trackers.first
+    priority = IssuePriority.find_by(name: priority_name) || IssuePriority.default
+
+    issue = Issue.new(
+      project: @project,
+      tracker: tracker,
+      author: User.current,
+      status: status,
+      priority: priority,
+      subject: subject,
+      description: description
+    )
+
+    if issue.save
+      children.each do |child_row|
+        child_subject = child_row['Тема']
+        checklist_item = ChecklistItem.new(
+          issue: issue,
+          subject: child_subject,
+          is_done: false
+        )
+        checklist_item.save
+      end
+      count += 1
+    end
+  end
+
+  count
+end
   
   
 end
