@@ -122,7 +122,7 @@ def import_as_checklists(csv_string)
 		  issue: issue,
 		  subject: child_row['Тема'],
 		  is_done: false,
-		  author_id: User.current.id,
+		  author: User.current,
 		  position: index + 1
 	    )
 	  end
