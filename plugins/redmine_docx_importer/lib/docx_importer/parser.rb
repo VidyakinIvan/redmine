@@ -70,22 +70,23 @@ end
     sections.reject { |sec| parent_numbers.include?(sec[:number]) }
   end
 
-def generate_csv(sections)
-  CSV.generate(col_sep: ';') do |csv|
-    csv << ['Тема', 'Описание', 'Статус', 'Трекер', 'Приоритет', 'Уровень']
+	def generate_csv(sections)
+	  CSV.generate(col_sep: ';') do |csv|
+		csv << ['Тема', 'Описание', 'Статус', 'Трекер', 'Приоритет', 'Уровень']
 
-    sections.each do |sec|
-      first_num = sec[:number].split('.').first.to_i
-      next unless first_num >= 3
+		sections.each do |sec|
+		  first_num = sec[:number].split('.').first.to_i
+		  next unless first_num >= 3
 
-      csv << [
-        "#{sec[:number]} #{sec[:title]}",
-        sec[:text].strip,
-        "Бэклог",
-        "Входящий поток",
-        "Важная",
-        sec[:level]
-      ]
-    end
-  end
+		  csv << [
+			"#{sec[:number]} #{sec[:title]}",
+			sec[:text].strip,
+			"Бэклог",
+			"Входящий поток",
+			"Важная",
+			sec[:level]
+		  ]
+		end
+	  end
+	end
 end
