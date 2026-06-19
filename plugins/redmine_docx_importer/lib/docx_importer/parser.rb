@@ -6,11 +6,15 @@ class DocxParser
     @doc = Docx::Document.open(file_path)
   end
 
-  def parse
-    sections = extract_sections
-    leaf_sections = filter_leaves(sections)
-    generate_csv(leaf_sections)
+def parse(mode = 'cards')
+  sections = extract_sections
+  if mode == 'checklist'
+    filtered = sections.select { |sec| sec[:level] == 2 || sec[:level] == 3 }
+  else
+    filtered = filter_leaves(sections)
   end
+  generate_csv(filtered)
+end
 
   private
 

@@ -18,7 +18,8 @@ class DocxImportController < ApplicationController
     File.open(docx_path, 'wb') { |f| f.write(file.read) }
 
     parser = DocxParser.new(docx_path)
-    csv_string = parser.parse
+	mode = params[:import_mode] || 'cards'
+	csv_string = parser.parse(mode)
 
     mode = params[:import_mode] || 'cards'
     issues_created = import_from_csv(csv_string, mode)
