@@ -9,6 +9,21 @@
       <%= file_field_tag 'file', accept: '.docx' %>
     </p>
     <p>
+      <strong>Режим импорта:</strong>
+    </p>
+    <p>
+      <label>
+        <%= radio_button_tag 'import_mode', 'cards', true %>
+        Создавать карточки для всех конечных разделов
+      </label>
+    </p>
+    <p>
+      <label>
+        <%= radio_button_tag 'import_mode', 'checklist' %>
+        Разделы 1-2 уровня как задачи, подразделы 3-го как чек-лист
+      </label>
+    </p>
+    <p>
       <%= submit_tag 'Загрузить и создать задачи', class: 'button-positive' %>
     </p>
   <% end %>
