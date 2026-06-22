@@ -1,8 +1,10 @@
 Redmine::Plugin.register :redmine_docx_importer do
-  name 'DOCX Importer Plugin'
-  author 'Your Company'
+  name 'DOCX Importer plugin'
+  author 'Ivan Vidyakin'
   description 'Import specification from Word into Redmine issues'
-  version '0.0.3'
+  version '0.9.0'
+  url 'https://github.com/VidyakinIvan/redmine/tree/master/plugins/redmine_docx_importer'
+  author_url 'mailto:deadmazay123@mail.ru'
   
   permission :docx_import, { docx_import: [:upload] }, public: true
 end

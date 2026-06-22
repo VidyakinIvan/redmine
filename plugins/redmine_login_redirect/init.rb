@@ -1,8 +1,10 @@
 Redmine::Plugin.register :redmine_login_redirect do
-  name 'Custom Login Redirect'
-  author 'Your Company'
-  description 'Redirect users to the home page after login'
-  version '0.0.2'
+  name 'Custom Login Redirect plugin'
+  author 'Ivan Vidyakin'
+  description 'Redirects users to the home page after login'
+  version '1.0.0'
+  url 'https://github.com/VidyakinIvan/redmine/tree/master/plugins/redmine_login_redirect'
+  author_url 'mailto:deadmazay123@mail.ru'
 end
 
 Rails.application.config.to_prepare do
