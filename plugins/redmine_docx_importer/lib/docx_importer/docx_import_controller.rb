@@ -124,8 +124,6 @@ def import_as_checklists(csv_string)
           is_done: false,
           position: index + 1
         )
-        checklist.author_id = User.current.id
-        checklist.save!
       end
       count += 1
     end
