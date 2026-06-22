@@ -118,7 +118,7 @@ def import_as_checklists(csv_string)
 
     if issue.save
       children.each_with_index do |child_row, index|
-        checklist = Checklist.new(
+        checklist = Checklist.create!(
           issue: issue,
           subject: child_row['Тема'],
           is_done: false,
