@@ -11,7 +11,7 @@ services:
       TZ: Europe/Moscow
     entrypoint: >
       sh -c "
-        bundle exec rake redmine:plugins:migrate RAILS_ENV=production 2>/dev/null || true &&
+        bundle exec rake redmine:plugins:migrate RAILS_ENV=production || true &&
         exec /docker-entrypoint.sh rails server -b 0.0.0.0
       "
     volumes:
