@@ -8,7 +8,12 @@ services:
       REDMINE_DB_MYSQL: db
       REDMINE_DB_PASSWORD: example
       REDMINE_SECRET_KEY_BASE: supersecretkey
-      TZ: Asia/Yekaterinburg
+      TZ: Europe/Moscow
+    entrypoint: >
+      sh -c "
+        bundle exec rake redmine:plugins:migrate RAILS_ENV=production 2>/dev/null || true &&
+        exec /docker-entrypoint.sh rails server -b 0.0.0.0
+      "
     volumes:
       - ./conf.d/database.yml:/usr/src/redmine/config/database.yml
       - ./themes:/usr/src/redmine/themes
