@@ -138,8 +138,10 @@ class ForgejoWebhookController < ApplicationController
       return
     end
     
+	author = find_author_from_commit(commit_data)
+	
     # Create a journal entry (comment) on the issue
-    journal = issue.init_journal(User.anonymous, create_journal_notes(message, commit_data))
+    journal = issue.init_journal(author, create_journal_notes(message, commit_data))
     
     # Check if we should close or reopen the issue
     if should_close_issue?(message)
@@ -155,6 +157,15 @@ class ForgejoWebhookController < ApplicationController
     end
   rescue => e
     Rails.logger.error "Forgejo Webhook: Error updating issue ##{issue_id}: #{e.message}"
+  end
+  
+  def find_author_from_commit(commit_data)
+	email = commit_data.dig('author', 'email') || commit_data.dig('committer', 'email')
+	if email.present?
+		user = User.find_by_mail(email)
+		return user if user
+	end
+	User.anonymous
   end
 
   def create_journal_notes(message, commit_data)
