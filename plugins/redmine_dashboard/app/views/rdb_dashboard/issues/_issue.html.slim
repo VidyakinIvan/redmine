@@ -3,3 +3,7 @@
   data={'rdb-drop-on': @board.drop_on(issue), 'rdb-drop-group': group.id, 'rdb-issue-id': issue.id, 'rdb-lock-version': issue.lock_version}
 )
   = render partial: "rdb_dashboard/issues/#{@board.issue_view}", locals: {issue: issue}
+  - if issue.due_date.present?
+    .rdb-issue-dates
+      span class="#{'rdb-overdue' if issue.overdue?}"
+        | Срок: #{format_date(issue.due_date)}
