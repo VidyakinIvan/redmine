@@ -10,7 +10,9 @@
       .rdb-card-progress-bar style="width: #{issue.done_ratio}%"
 
     .rdb-card-content
-      .rdb-card-subject.rdb-property-subject = issue.subject
+      .rdb-card-subject.rdb-property-subject
+        em = "#{issue.tracker.name}: "
+        = issue.subject
       .rdb-card-dates
         - if issue.due_date.present?
           span.rdb-due-date class="#{'rdb-overdue' if issue.overdue?}"
