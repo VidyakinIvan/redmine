@@ -9,12 +9,11 @@
     .rdb-card-progress
       .rdb-card-progress-bar style="width: #{issue.done_ratio}%"
 
-    .rdb-card-dates
-      - if issue.due_date.present?
-        span.rdb-due-date class="#{'rdb-overdue' if issue.overdue?}"
-          | Срок: #{format_date(issue.due_date)}
-
     .rdb-card-content
       .rdb-card-subject.rdb-property-subject = issue.subject
+      .rdb-card-dates
+        - if issue.due_date.present?
+          span.rdb-due-date class="#{'rdb-overdue' if issue.overdue?}"
+            | Срок: #{format_date(issue.due_date)}
       = render partial: 'rdb_dashboard/issues/issue_properties', locals: {issue: issue}
 / ISSUE CARD END
