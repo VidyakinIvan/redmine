@@ -1,14 +1,8 @@
-.rdb-property.rdb-property-tracker
-  em = issue.tracker
 - if @board.versions.any?
   - if issue.fixed_version
     .rdb-property.rdb-property-version = issue.fixed_version.name
   - else
     .rdb-property.rdb-property-version.rdb-disabled = t(:rdb_filter_version_unassigned)
-- if issue.assigned_to
-  .rdb-property.rdb-property-assignee = issue.assigned_to.name
-- else
-  .rdb-property.rdb-property-assignee.rdb-disabled = t(:rdb_unassigned)
 - if @board.issue_categories.any?
   - if issue.category
     .rdb-property.rdb-property-category = issue.category.name

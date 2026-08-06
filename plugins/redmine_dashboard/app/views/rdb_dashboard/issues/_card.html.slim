@@ -23,5 +23,5 @@
           = issue.assigned_to.name
         - else
           span.rdb-disabled = t(:rdb_unassigned)
-      = render partial: 'rdb_dashboard/issues/issue_properties', locals: {issue: issue}
+      = render partial: 'rdb_dashboard/issues/issue_properties_rest', locals: {issue: issue}
 / ISSUE CARD END
