@@ -10,11 +10,18 @@
       .rdb-card-progress-bar style="width: #{issue.done_ratio}%"
 
     .rdb-card-content
+      .rdb-card-tracker
+        = issue.tracker
       .rdb-card-subject.rdb-property-subject = issue.subject
       .rdb-card-dates
         - if issue.due_date.present?
           span.rdb-due-date class="#{'rdb-overdue' if issue.overdue?}"
             b
               | Срок: #{format_date(issue.due_date)}
+      .rdb-card-assignee
+        - if issue.assigned_to
+          = issue.assigned_to.name
+        - else
+          span.rdb-disabled = t(:rdb_unassigned)
       = render partial: 'rdb_dashboard/issues/issue_properties', locals: {issue: issue}
 / ISSUE CARD END
