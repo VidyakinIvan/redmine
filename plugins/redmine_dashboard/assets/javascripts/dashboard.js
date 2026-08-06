@@ -160,4 +160,11 @@
 		$.getScript('?');
 	});
 
+	$(document).on('dblclick', '.rdb-card', function(e) {
+		var issueId = $(this).closest('[data-rdb-issue-id]').data('rdb-issue-id');
+		if (issueId) {
+			window.open('/issues/' + issueId, '_blank');
+		}
+	});
+
 })(window, jQuery);
