@@ -14,6 +14,7 @@
       .rdb-card-dates
         - if issue.due_date.present?
           span.rdb-due-date class="#{'rdb-overdue' if issue.overdue?}"
-            | Срок: #{format_date(issue.due_date)}
+            b
+              | Срок: #{format_date(issue.due_date)}
       = render partial: 'rdb_dashboard/issues/issue_properties', locals: {issue: issue}
 / ISSUE CARD END
