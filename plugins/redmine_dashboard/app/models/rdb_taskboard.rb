@@ -45,35 +45,13 @@ class RdbTaskboard < RdbDashboard
     # Init columns
     options[:hide_columns] ||= []
 
-    done_statuses = statuses.select do |status|
-      next true if status.is_closed?
-
+    statuses.each do |status|
       add_column RdbColumn.new(
         "s#{status.id}",
         status.name,
         status,
+        compact: (options[:hide_done] && status.is_closed?),
         hide: options[:hide_columns].include?("s#{status.id}"),
-      )
-
-      false
-    end
-
-    if done_statuses.count == 1
-      status = done_statuses.first
-      add_column RdbColumn.new(
-        "s#{status.id}",
-        status.name,
-        status,
-        compact: options[:hide_done],
-        hide: options[:hide_columns].include?("s#{status.id}"),
-      )
-    elsif done_statuses.count > 0
-      add_column RdbColumn.new(
-        'sX',
-        :rdb_column_done,
-        done_statuses,
-        compact: options[:hide_done],
-        hide: options[:hide_columns].include?('sX'),
       )
     end
 
